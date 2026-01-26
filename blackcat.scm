@@ -1,4 +1,4 @@
 (define-module (blackcat)
-  #:use-module (blackcate config)
-  #:use-module (blackcate shepherd-utils)
+  #:use-module (blackcat config)
+  #:use-module (blackcat shepherd-utils)
   #:re-export (%blackcat-version))

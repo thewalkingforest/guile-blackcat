@@ -4,8 +4,8 @@
 
 (define* (setup-dir path mode uid' #:optional (gid' uid'))
   "Ensure directory exists at PATH with MODE and owned by UID:GID"
-  (let ((uid (getuid uid'))
-        (gid (getgid gid')))
+  (let ((uid (get-uid uid'))
+        (gid (get-gid gid')))
     (cond
       ((or (not uid) (not gid)) #f)
       ((not (access? path F_OK))
