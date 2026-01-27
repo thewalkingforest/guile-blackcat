@@ -1,9 +1,10 @@
 GUILE ?= guile
 GUILD ?= guild
 
+DESTDIR=
 PREFIX ?= /usr/local
-datarootdir ?= $(PREFIX)/share
-libdir ?= $(PREFIX)/lib
+datarootdir ?= $(DESTDIR)$(PREFIX)/share
+libdir ?= $(DESTDIR)$(PREFIX)/lib
 
 GUILE_SITE ?= $(datarootdir)/guile/site/3.0
 GUILE_OBJ_DIR ?= $(libdir)/guile/3.0/site-ccache
@@ -38,18 +39,18 @@ blackcat.go: blackcat.scm blackcat/config.go blackcat/shepherd-utils.go
 clean:
 	rm -f $(GOBJECTS)
 
-install: all
+install:
 	@echo "Installing Guile source files to $(GUILE_SITE)"
 	install -d $(GUILE_SITE)
-	install -d $(GUILE_SITE)/blackcat
 	install -m 644 blackcat.scm $(GUILE_SITE)/
+	install -d $(GUILE_SITE)/blackcat
 	install -m 644 blackcat/config.scm $(GUILE_SITE)/blackcat/
 	install -m 644 blackcat/utils.scm $(GUILE_SITE)/blackcat/
 	install -m 644 blackcat/shepherd-utils.scm $(GUILE_SITE)/blackcat/
 	@echo "Installing compiled files to $(GUILE_OBJ_DIR)"
 	install -d $(GUILE_OBJ_DIR)
-	install -d $(GUILE_OBJ_DIR)/blackcat
 	install -m 644 blackcat.go $(GUILE_OBJ_DIR)/
+	install -d $(GUILE_OBJ_DIR)/blackcat
 	install -m 644 blackcat/config.go $(GUILE_OBJ_DIR)/blackcat/
 	install -m 644 blackcat/utils.go $(GUILE_OBJ_DIR)/blackcat/
 	install -m 644 blackcat/shepherd-utils.go $(GUILE_OBJ_DIR)/blackcat/
