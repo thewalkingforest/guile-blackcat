@@ -6,7 +6,7 @@ datarootdir ?= $(PREFIX)/share
 libdir ?= $(PREFIX)/lib
 
 GUILE_SITE ?= $(datarootdir)/guile/site/3.0
-GUILE_OBJ_DIR ?= $(libdir)/guile/site/3.0/site-ccache
+GUILE_OBJ_DIR ?= $(libdir)/guile/3.0/site-ccache
 
 SOURCES = \
 	blackcat/config.scm \
