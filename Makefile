@@ -12,6 +12,7 @@ GUILE_OBJ_DIR ?= $(libdir)/guile/3.0/site-ccache
 SOURCES = \
 	blackcat/config.scm \
 	blackcat/utils.scm \
+	blackcat/shepherd.scm \
 	blackcat/shepherd-utils.scm \
 	blackcat.scm
 
@@ -28,6 +29,9 @@ blackcat/config.go: blackcat/config.scm
 	$(GUILD) compile $(GUILD_FLAGS) -o $@ $<
 
 blackcat/utils.go: blackcat/utils.scm blackcat/config.go
+	$(GUILD) compile $(GUILD_FLAGS) -o $@ $<
+
+blackcat/shepherd.go: blackcat/shepherd.scm
 	$(GUILD) compile $(GUILD_FLAGS) -o $@ $<
 
 blackcat/shepherd-utils.go: blackcat/shepherd-utils.scm blackcat/utils.go
