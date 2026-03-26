@@ -10,9 +10,9 @@ GUILE_SITE ?= $(datarootdir)/guile/site/3.0
 GUILE_OBJ_DIR ?= $(libdir)/guile/3.0/site-ccache
 
 SOURCES = \
-	blackcat.scm \
 	blackcat/config.scm \
 	blackcat/utils.scm \
+	blackcat.scm \
 	blackcat/shepherd.scm \
 	blackcat/shepherd/utils.scm
 
@@ -30,7 +30,7 @@ blackcat/shepherd/utils.go: blackcat/utils.go
 blackcat.go: blackcat/config.go
 
 %.go: %.scm
-	$(GUILD) compile $(GUILD_FLAGS) -o $@ $<
+	GUILE_LOAD_COMPILED_PATH=. $(GUILD) compile $(GUILD_FLAGS) -o $@ $<
 
 clean:
 	rm -f $(GOBJECTS)
