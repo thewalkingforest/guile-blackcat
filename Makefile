@@ -55,15 +55,17 @@ uninstall:
 	rm -f $(GUILE_SITE)/blackcat.scm
 	rm -f $(GUILE_SITE)/blackcat/config.scm
 	rm -f $(GUILE_SITE)/blackcat/utils.scm
-	rm -f $(GUILE_SITE)/blackcat/shepherd-utils.scm
+	rm -f $(GUILE_SITE)/blackcat/shepherd/utils.scm
 	rm -f $(GUILE_OBJ_DIR)/blackcat.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/config.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/utils.go
-	rm -f $(GUILE_OBJ_DIR)/blackcat/shepherd-utils.go
+	rm -f $(GUILE_OBJ_DIR)/blackcat/shepherd/utils.go
 	-rmdir $(GUILE_SITE)/blackcat
+	-rmdir $(GUILE_SITE)/blackcat/shepherd
 	-rmdir $(GUILE_OBJ_DIR)/blackcat
+	-rmdir $(GUILE_OBJ_DIR)/blackcat/shepherd
 
 check:
 	$(GUILE) -L . -c "(use-modules (blackcat config)) (display %blackcat-version) (newline)"
 	$(GUILE) -L . -c "(use-modules (blackcat utils))"
-	$(GUILE) -L . -c "(use-modules (blackcat shepherd-utils))"
+	$(GUILE) -L . -c "(use-modules (blackcat shepherd utils))"
