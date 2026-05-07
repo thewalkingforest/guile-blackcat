@@ -24,7 +24,7 @@ GOBJECTS = $(SOURCES:.scm=.go)
 GUILE_WARNINGS = -Wunbound-variable -Warity-mismatch -Wformat
 GUILD_FLAGS = $(GUILE_WARNINGS) -L .
 
-.PHONY: all clean install uninstall
+.PHONY: all clean install uninstall check
 
 all: $(GOBJECTS)
 
@@ -48,6 +48,8 @@ install:
 	install -m 644 blackcat/config.scm $(GUILE_SITE)/blackcat/
 	install -m 644 blackcat/shepherd.scm $(GUILE_SITE)/blackcat/
 	install -m 644 blackcat/utils.scm $(GUILE_SITE)/blackcat/
+	install -m 644 blackcat/inotify.scm $(GUILE_SITE)/blackcat/
+	install -m 644 blackcat/watch.scm $(GUILE_SITE)/blackcat/
 	install -d $(GUILE_SITE)/blackcat/shepherd
 	install -m 644 blackcat/shepherd/utils.scm $(GUILE_SITE)/blackcat/shepherd
 	install -m 644 blackcat/shepherd/defaults.scm $(GUILE_SITE)/blackcat/shepherd
@@ -58,6 +60,8 @@ install:
 	install -m 644 blackcat/config.go $(GUILE_OBJ_DIR)/blackcat/
 	install -m 644 blackcat/shepherd.go $(GUILE_OBJ_DIR)/blackcat/
 	install -m 644 blackcat/utils.go $(GUILE_OBJ_DIR)/blackcat/
+	install -m 644 blackcat/inotify.go $(GUILE_OBJ_DIR)/blackcat/
+	install -m 644 blackcat/watch.go $(GUILE_OBJ_DIR)/blackcat/
 	install -d $(GUILE_OBJ_DIR)/blackcat/shepherd
 	install -m 644 blackcat/shepherd/utils.go $(GUILE_OBJ_DIR)/blackcat/shepherd/
 	install -m 644 blackcat/shepherd/defaults.go $(GUILE_OBJ_DIR)/blackcat/shepherd/
@@ -72,6 +76,8 @@ uninstall:
 	rm -f $(GUILE_OBJ_DIR)/blackcat.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/config.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/utils.go
+	rm -f $(GUILE_OBJ_DIR)/blackcat/inotify.go
+	rm -f $(GUILE_OBJ_DIR)/blackcat/watch.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/shepherd.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/shepherd/utils.go
 	rm -f $(GUILE_SITE)/blackcat/shepherd/defaults.go
