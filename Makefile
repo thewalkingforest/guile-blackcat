@@ -10,12 +10,14 @@ GUILE_SITE ?= $(datarootdir)/guile/site/3.0
 GUILE_OBJ_DIR ?= $(libdir)/guile/3.0/site-ccache
 
 SOURCES = \
-	blackcat/config.scm \
-	blackcat/utils.scm \
 	blackcat.scm \
-	blackcat/shepherd/defaults.scm \
+	blackcat/config.scm \
+	blackcat/inotify.scm \
 	blackcat/shepherd.scm \
-	blackcat/shepherd/utils.scm
+	blackcat/shepherd/defaults.scm \
+	blackcat/shepherd/utils.scm \
+	blackcat/utils.scm \
+	blackcat/watch.scm
 
 GOBJECTS = $(SOURCES:.scm=.go)
 
@@ -30,6 +32,7 @@ blackcat.go: blackcat/config.go
 blackcat/shepherd.go: blackcat/shepherd/defaults.go
 blackcat/shepherd/utils.go: blackcat/utils.go
 blackcat/utils.go: blackcat/config.go
+blackcat/watch.go: blackcat/inotify.go
 
 %.go: %.scm
 	GUILE_LOAD_COMPILED_PATH=. $(GUILD) compile $(GUILD_FLAGS) -o $@ $<
