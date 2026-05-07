@@ -7,8 +7,9 @@
   #:export (load-services-dir))
 
 (use-modules (ice-9 ftw))
+(use-modules (blackcat shepherd defaults))
 
-(define (load-services-dir path)
+(define* (load-services-dir #:optional (path (default-services-path)))
   (let ((services-dir  path))
     (for-each
       (lambda (file)

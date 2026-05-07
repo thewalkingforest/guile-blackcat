@@ -13,6 +13,7 @@ SOURCES = \
 	blackcat/config.scm \
 	blackcat/utils.scm \
 	blackcat.scm \
+	blackcat/shepherd/defaults.scm \
 	blackcat/shepherd.scm \
 	blackcat/shepherd/utils.scm
 
@@ -25,9 +26,10 @@ GUILD_FLAGS = $(GUILE_WARNINGS) -L .
 
 all: $(GOBJECTS)
 
-blackcat/utils.go: blackcat/config.go
-blackcat/shepherd/utils.go: blackcat/utils.go
 blackcat.go: blackcat/config.go
+blackcat/shepherd.go: blackcat/shepherd/defaults.go
+blackcat/shepherd/utils.go: blackcat/utils.go
+blackcat/utils.go: blackcat/config.go
 
 %.go: %.scm
 	GUILE_LOAD_COMPILED_PATH=. $(GUILD) compile $(GUILD_FLAGS) -o $@ $<
@@ -45,6 +47,7 @@ install:
 	install -m 644 blackcat/utils.scm $(GUILE_SITE)/blackcat/
 	install -d $(GUILE_SITE)/blackcat/shepherd
 	install -m 644 blackcat/shepherd/utils.scm $(GUILE_SITE)/blackcat/shepherd
+	install -m 644 blackcat/shepherd/defaults.scm $(GUILE_SITE)/blackcat/shepherd
 	@echo "Installing compiled files to $(GUILE_OBJ_DIR)"
 	install -d $(GUILE_OBJ_DIR)
 	install -m 644 blackcat.go $(GUILE_OBJ_DIR)/
@@ -54,6 +57,7 @@ install:
 	install -m 644 blackcat/utils.go $(GUILE_OBJ_DIR)/blackcat/
 	install -d $(GUILE_OBJ_DIR)/blackcat/shepherd
 	install -m 644 blackcat/shepherd/utils.go $(GUILE_OBJ_DIR)/blackcat/shepherd/
+	install -m 644 blackcat/shepherd/defaults.go $(GUILE_OBJ_DIR)/blackcat/shepherd/
 
 uninstall:
 	rm -f $(GUILE_SITE)/blackcat.scm
@@ -61,11 +65,13 @@ uninstall:
 	rm -f $(GUILE_SITE)/blackcat/utils.scm
 	rm -f $(GUILE_SITE)/blackcat/shepherd.scm
 	rm -f $(GUILE_SITE)/blackcat/shepherd/utils.scm
+	rm -f $(GUILE_SITE)/blackcat/shepherd/defaults.scm
 	rm -f $(GUILE_OBJ_DIR)/blackcat.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/config.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/utils.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/shepherd.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/shepherd/utils.go
+	rm -f $(GUILE_SITE)/blackcat/shepherd/defaults.go
 	-rmdir $(GUILE_SITE)/blackcat
 	-rmdir $(GUILE_SITE)/blackcat/shepherd
 	-rmdir $(GUILE_OBJ_DIR)/blackcat
