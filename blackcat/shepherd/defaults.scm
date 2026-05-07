@@ -3,6 +3,15 @@
 ; file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 (define-module (blackcat shepherd defaults)
-  #:export (default-services-path))
+  #:export (default-services-path
+            %core-services))
 
 (define default-services-path "/etc/shepherd.d")
+
+(define %core-services
+  '(agetty-tty1
+    agetty-tty2
+    agetty-tty3
+    agetty-tty4
+    agetty-tty5
+    agetty-tty6))

@@ -4,10 +4,10 @@
 
 (define-module (blackcat shepherd)
   #:declarative? #f
-  #:export (load-services-dir))
-
-(use-modules (ice-9 ftw))
-(use-modules (blackcat shepherd defaults))
+  #:use-module (ice-9 ftw)
+  #:use-module (blackcat shepherd defaults)
+  #:export (load-services-dir)
+  #:re-export (%core-services))
 
 (define* (load-services-dir #:optional (path (default-services-path)))
   (let ((services-dir  path))
