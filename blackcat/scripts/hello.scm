@@ -3,5 +3,4 @@
   #:export (main))
 
 (define (main . args)
-  (parameterize ((program-name "hello"))
-    (format #t "hello ~a~%" (string-join args ""))))
+   (format #t "hello ~a~%" (string-join args "")))
