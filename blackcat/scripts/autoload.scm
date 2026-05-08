@@ -1,4 +1,4 @@
-(define-module (blackcat scripts service-watcher)
+(define-module (blackcat scripts autoload)
   #:use-module (ice-9 format)
   #:use-module (blackcat shepherd defaults)
   #:use-module (blackcat watch)
