@@ -2,9 +2,9 @@
   #:use-module (blackcat inotify)
   #:export (watch-directory))
 
-(define (watch-directory dir callback)
+(define* (watch-directory dir callback #:optional (events '(create delete modify moved-from moved-to)))
   (let ((inotify (make-inotify)))
-    (inotify-add-watch! inotify dir '(create delete modify moved-from moved-to))
+    (inotify-add-watch! inotify dir events)
     (let loop ()
       (when (inotify-pending-events? inotify)
         (let ((event (inotify-read-event inotify)))
