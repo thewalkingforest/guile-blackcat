@@ -14,4 +14,5 @@
     agetty-tty3
     agetty-tty4
     agetty-tty5
-    agetty-tty6))
+    agetty-tty6
+    service-autoloader))
