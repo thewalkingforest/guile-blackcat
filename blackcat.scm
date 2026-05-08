@@ -7,6 +7,8 @@
   #:use-module (blackcat watch)
   #:use-module (blackcat inotify)
   #:use-module (blackcat shepherd)
+  #:use-module (blackcat scripts hello)
+  #:use-module (blackcat scripts service-watcher)
   #:use-module (blackcat shepherd utils)
   #:use-module (blackcat shepherd defaults)
   #:re-export (%blackcat-version))

@@ -13,6 +13,8 @@ SOURCES = \
 	blackcat.scm \
 	blackcat/config.scm \
 	blackcat/inotify.scm \
+	blackcat/scripts/service-watcher.scm \
+	blackcat/scripts/hello.scm \
 	blackcat/shepherd.scm \
 	blackcat/shepherd/defaults.scm \
 	blackcat/shepherd/utils.scm \
@@ -29,6 +31,7 @@ GUILD_FLAGS = $(GUILE_WARNINGS) -L .
 all: $(GOBJECTS)
 
 blackcat.go: blackcat/config.go
+blackcat/scripts/service-watcher.go: blackcat/shepherd/defaults.go blackcat/watch.go
 blackcat/shepherd.go: blackcat/shepherd/defaults.go
 blackcat/shepherd/utils.go: blackcat/utils.go
 blackcat/utils.go: blackcat/config.go
@@ -50,6 +53,9 @@ install:
 	install -m 644 blackcat/utils.scm $(GUILE_SITE)/blackcat/
 	install -m 644 blackcat/inotify.scm $(GUILE_SITE)/blackcat/
 	install -m 644 blackcat/watch.scm $(GUILE_SITE)/blackcat/
+	install -d $(GUILE_SITE)/blackcat/scripts
+	install -m 644 blackcat/scripts/service-watcher.scm $(GUILE_SITE)/blackcat/scripts
+	install -m 644 blackcat/scripts/hello.scm $(GUILE_SITE)/blackcat/scripts
 	install -d $(GUILE_SITE)/blackcat/shepherd
 	install -m 644 blackcat/shepherd/utils.scm $(GUILE_SITE)/blackcat/shepherd
 	install -m 644 blackcat/shepherd/defaults.scm $(GUILE_SITE)/blackcat/shepherd
@@ -62,6 +68,9 @@ install:
 	install -m 644 blackcat/utils.go $(GUILE_OBJ_DIR)/blackcat/
 	install -m 644 blackcat/inotify.go $(GUILE_OBJ_DIR)/blackcat/
 	install -m 644 blackcat/watch.go $(GUILE_OBJ_DIR)/blackcat/
+	install -d $(GUILE_OBJ_DIR)/blackcat/scripts
+	install -m 644 blackcat/scripts/service-watcher.go $(GUILE_OBJ_DIR)/blackcat/scripts
+	install -m 644 blackcat/scripts/hello.go $(GUILE_OBJ_DIR)/blackcat/scripts
 	install -d $(GUILE_OBJ_DIR)/blackcat/shepherd
 	install -m 644 blackcat/shepherd/utils.go $(GUILE_OBJ_DIR)/blackcat/shepherd/
 	install -m 644 blackcat/shepherd/defaults.go $(GUILE_OBJ_DIR)/blackcat/shepherd/
@@ -69,22 +78,28 @@ install:
 uninstall:
 	rm -f $(GUILE_SITE)/blackcat.scm
 	rm -f $(GUILE_SITE)/blackcat/config.scm
-	rm -f $(GUILE_SITE)/blackcat/utils.scm
+	rm -f $(GUILE_SITE)/blackcat/scripts/service-watcher.scm
+	rm -f $(GUILE_SITE)/blackcat/scripts/hello.scm
 	rm -f $(GUILE_SITE)/blackcat/shepherd.scm
-	rm -f $(GUILE_SITE)/blackcat/shepherd/utils.scm
+	rm -f $(GUILE_SITE)/blackcat/shepherd/defaults.go
 	rm -f $(GUILE_SITE)/blackcat/shepherd/defaults.scm
+	rm -f $(GUILE_SITE)/blackcat/shepherd/utils.scm
+	rm -f $(GUILE_SITE)/blackcat/utils.scm
 	rm -f $(GUILE_OBJ_DIR)/blackcat.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/config.go
-	rm -f $(GUILE_OBJ_DIR)/blackcat/utils.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/inotify.go
-	rm -f $(GUILE_OBJ_DIR)/blackcat/watch.go
+	rm -f $(GUILE_OBJ_DIR)/blackcat/scripts/service-watcher.go
+	rm -f $(GUILE_OBJ_DIR)/blackcat/scripts/hello.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/shepherd.go
 	rm -f $(GUILE_OBJ_DIR)/blackcat/shepherd/utils.go
-	rm -f $(GUILE_SITE)/blackcat/shepherd/defaults.go
-	-rmdir $(GUILE_SITE)/blackcat
+	rm -f $(GUILE_OBJ_DIR)/blackcat/utils.go
+	rm -f $(GUILE_OBJ_DIR)/blackcat/watch.go
+	-rmdir $(GUILE_SITE)/blackcat/scripts
 	-rmdir $(GUILE_SITE)/blackcat/shepherd
-	-rmdir $(GUILE_OBJ_DIR)/blackcat
+	-rmdir $(GUILE_SITE)/blackcat
+	-rmdir $(GUILE_OBJ_DIR)/blackcat/scripts
 	-rmdir $(GUILE_OBJ_DIR)/blackcat/shepherd
+	-rmdir $(GUILE_OBJ_DIR)/blackcat
 
 check:
 	$(GUILE) -L . -c "(use-modules (blackcat config)) (display %blackcat-version) (newline)"
