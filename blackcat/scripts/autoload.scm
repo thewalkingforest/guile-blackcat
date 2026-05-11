@@ -1,9 +1,10 @@
 (define-module (blackcat scripts autoload)
-  #:use-module (ice-9 format)
-  #:use-module (ice-9 ftw)
-  #:use-module (srfi srfi-171)
   #:use-module (blackcat shepherd defaults)
   #:use-module (blackcat watch)
+  #:use-module (ice-9 format)
+  #:use-module (ice-9 ftw)
+  #:use-module (ice-9 match)
+  #:use-module (srfi srfi-171)
   #:export (main))
 
 (define get-file-names
@@ -22,8 +23,13 @@
          (pid (spawn "herd" args)))
     (waitpid pid)))
 
+(define (remove-suffix str suffix)
+  (if (string-suffix? suffix file)
+    (string-drop-right file (string-length suffix))
+    file))
+
 (define (unload-service file)
-  (let* ((name (string-replace-substring file ".scm" ""))
+  (let* ((name (remove-suffix file ".scm"))
          (args `("herd" "unload" "root" ,name))
          (pid (spawn "herd" args)))
     (waitpid pid)))
