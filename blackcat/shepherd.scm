@@ -4,9 +4,8 @@
 
 (define-module (blackcat shepherd)
   #:declarative? #f
-  #:use-module (ice-9 ftw)
   #:use-module (blackcat shepherd defaults)
-  #:use-module (shepherd service)
+  #:use-module (ice-9 ftw)
   #:export (load-services-dir)
   #:re-export (%core-services))
 
@@ -19,29 +18,3 @@
       (or (scandir services-dir
                    (lambda (f) (string-suffix? ".scm" f)))
           '()))))
-
-(define* (declare-service provides #:keys (requirement ’())
-                                          (one-shot? #f)
-                                          (transient? #f)
-                                          (respawn? #f)
-                                          (start (const #t))
-                                          (stop (const #f))
-                                          (actions (actions))
-                                          (termination-handler default-service-termination-handler)
-                                          (documentation #f)
-                                          (setup #t))
-  (define s
-    (service
-      provides
-      #:requirement requirement
-      #:one-shot? one-shot?
-      #:transient? transient?
-      #:respawn? respawn?
-      #:start start
-      #:stop stop
-      #:actions actions
-      #:termination-handler termination-handler
-      #:documentation documentation))
-
-  (when (setup)
-    (register-services (list s))))
