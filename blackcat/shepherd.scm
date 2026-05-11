@@ -6,6 +6,7 @@
   #:declarative? #f
   #:use-module (ice-9 ftw)
   #:use-module (blackcat shepherd defaults)
+  #:use-module (shepherd service)
   #:export (load-services-dir)
   #:re-export (%core-services))
 
@@ -43,5 +44,4 @@
       #:documentation documentation))
 
   (when (setup)
-    (register-services (list s)))
-  )
+    (register-services (list s))))
