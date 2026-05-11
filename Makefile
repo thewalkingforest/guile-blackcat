@@ -1,26 +1,16 @@
 GUILE ?= guile
 GUILD ?= guild
 
-DESTDIR=
+DESTDIR =
 PREFIX ?= /usr/local
 datarootdir ?= $(DESTDIR)$(PREFIX)/share
 libdir ?= $(DESTDIR)$(PREFIX)/lib
 
-GUILE_SITE ?= $(datarootdir)/guile/site/3.0
-GUILE_OBJ_DIR ?= $(libdir)/guile/3.0/site-ccache
+GUILE_EFFECTIVE_VERSION ?= $(shell $(GUILE) -c "(display (effective-version))")
+GUILE_SITE ?= $(datarootdir)/guile/site/$(GUILE_EFFECTIVE_VERSION)
+GUILE_OBJ_DIR ?= $(libdir)/guile/$(GUILE_EFFECTIVE_VERSION)/site-ccache
 
-SOURCES = \
-	blackcat.scm \
-	blackcat/config.scm \
-	blackcat/inotify.scm \
-	blackcat/scripts/autoload.scm \
-	blackcat/scripts/hello.scm \
-	blackcat/shepherd.scm \
-	blackcat/shepherd/defaults.scm \
-	blackcat/shepherd/utils.scm \
-	blackcat/utils.scm \
-	blackcat/watch.scm
-
+SOURCES := blackcat.scm $(shell find blackcat -name '*.scm' | sort)
 GOBJECTS = $(SOURCES:.scm=.go)
 
 GUILE_WARNINGS = -Wunbound-variable -Warity-mismatch -Wformat
@@ -43,63 +33,21 @@ blackcat/watch.go: blackcat/inotify.go
 clean:
 	rm -f $(GOBJECTS)
 
-install:
+install: $(GOBJECTS)
 	@echo "Installing Guile source files to $(GUILE_SITE)"
-	install -d $(GUILE_SITE)
-	install -m 644 blackcat.scm $(GUILE_SITE)/
-	install -d $(GUILE_SITE)/blackcat
-	install -m 644 blackcat/config.scm $(GUILE_SITE)/blackcat/
-	install -m 644 blackcat/shepherd.scm $(GUILE_SITE)/blackcat/
-	install -m 644 blackcat/utils.scm $(GUILE_SITE)/blackcat/
-	install -m 644 blackcat/inotify.scm $(GUILE_SITE)/blackcat/
-	install -m 644 blackcat/watch.scm $(GUILE_SITE)/blackcat/
-	install -d $(GUILE_SITE)/blackcat/scripts
-	install -m 644 blackcat/scripts/autoload.scm $(GUILE_SITE)/blackcat/scripts
-	install -m 644 blackcat/scripts/hello.scm $(GUILE_SITE)/blackcat/scripts
-	install -d $(GUILE_SITE)/blackcat/shepherd
-	install -m 644 blackcat/shepherd/utils.scm $(GUILE_SITE)/blackcat/shepherd
-	install -m 644 blackcat/shepherd/defaults.scm $(GUILE_SITE)/blackcat/shepherd
+	@for f in $(SOURCES); do \
+		install -Dm644 $$f $(GUILE_SITE)/$$f; \
+	done
 	@echo "Installing compiled files to $(GUILE_OBJ_DIR)"
-	install -d $(GUILE_OBJ_DIR)
-	install -m 644 blackcat.go $(GUILE_OBJ_DIR)/
-	install -d $(GUILE_OBJ_DIR)/blackcat
-	install -m 644 blackcat/config.go $(GUILE_OBJ_DIR)/blackcat/
-	install -m 644 blackcat/shepherd.go $(GUILE_OBJ_DIR)/blackcat/
-	install -m 644 blackcat/utils.go $(GUILE_OBJ_DIR)/blackcat/
-	install -m 644 blackcat/inotify.go $(GUILE_OBJ_DIR)/blackcat/
-	install -m 644 blackcat/watch.go $(GUILE_OBJ_DIR)/blackcat/
-	install -d $(GUILE_OBJ_DIR)/blackcat/scripts
-	install -m 644 blackcat/scripts/autoload.go $(GUILE_OBJ_DIR)/blackcat/scripts
-	install -m 644 blackcat/scripts/hello.go $(GUILE_OBJ_DIR)/blackcat/scripts
-	install -d $(GUILE_OBJ_DIR)/blackcat/shepherd
-	install -m 644 blackcat/shepherd/utils.go $(GUILE_OBJ_DIR)/blackcat/shepherd/
-	install -m 644 blackcat/shepherd/defaults.go $(GUILE_OBJ_DIR)/blackcat/shepherd/
+	@for f in $(GOBJECTS); do \
+		install -Dm644 $$f $(GUILE_OBJ_DIR)/$$f; \
+	done
 
 uninstall:
-	rm -f $(GUILE_SITE)/blackcat.scm
-	rm -f $(GUILE_SITE)/blackcat/config.scm
-	rm -f $(GUILE_SITE)/blackcat/scripts/autoload.scm
-	rm -f $(GUILE_SITE)/blackcat/scripts/hello.scm
-	rm -f $(GUILE_SITE)/blackcat/shepherd.scm
-	rm -f $(GUILE_SITE)/blackcat/shepherd/defaults.go
-	rm -f $(GUILE_SITE)/blackcat/shepherd/defaults.scm
-	rm -f $(GUILE_SITE)/blackcat/shepherd/utils.scm
-	rm -f $(GUILE_SITE)/blackcat/utils.scm
-	rm -f $(GUILE_OBJ_DIR)/blackcat.go
-	rm -f $(GUILE_OBJ_DIR)/blackcat/config.go
-	rm -f $(GUILE_OBJ_DIR)/blackcat/inotify.go
-	rm -f $(GUILE_OBJ_DIR)/blackcat/scripts/autoload.go
-	rm -f $(GUILE_OBJ_DIR)/blackcat/scripts/hello.go
-	rm -f $(GUILE_OBJ_DIR)/blackcat/shepherd.go
-	rm -f $(GUILE_OBJ_DIR)/blackcat/shepherd/utils.go
-	rm -f $(GUILE_OBJ_DIR)/blackcat/utils.go
-	rm -f $(GUILE_OBJ_DIR)/blackcat/watch.go
-	-rmdir $(GUILE_SITE)/blackcat/scripts
-	-rmdir $(GUILE_SITE)/blackcat/shepherd
-	-rmdir $(GUILE_SITE)/blackcat
-	-rmdir $(GUILE_OBJ_DIR)/blackcat/scripts
-	-rmdir $(GUILE_OBJ_DIR)/blackcat/shepherd
-	-rmdir $(GUILE_OBJ_DIR)/blackcat
+	@for f in $(SOURCES); do rm -f $(GUILE_SITE)/$$f; done
+	@for f in $(GOBJECTS); do rm -f $(GUILE_OBJ_DIR)/$$f; done
+	-find $(GUILE_SITE)/blackcat $(GUILE_OBJ_DIR)/blackcat \
+		-depth -type d -empty -delete 2>/dev/null
 
 check:
 	$(GUILE) -L . -c "(use-modules (blackcat config)) (display %blackcat-version) (newline)"
