@@ -10,11 +10,8 @@
   #:re-export (%core-services))
 
 (define* (load-services-dir #:optional (path (default-services-path)))
-  (let ((services-dir  path))
-    (for-each
-      (lambda (file)
-        (when (string-suffix? ".scm" file)
-          (load (string-append services-dir "/" file))))
-      (or (scandir services-dir
-                   (lambda (f) (string-suffix? ".scm" f)))
-          '()))))
+  (for-each
+    (lambda (file)
+      (load (string-append path "/" file)))
+    (or (scandir path (lambda (f) (string-suffix? ".scm" f)))
+        '())))
