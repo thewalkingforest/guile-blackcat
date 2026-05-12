@@ -8,6 +8,8 @@
   #:use-module (ice-9 format)
   #:use-module (ice-9 ftw)
   #:use-module (ice-9 match)
+  #:use-module (shepherd comm)
+  #:use-module (shepherd support)
   #:use-module (srfi srfi-171)
   #:export (main))
 
@@ -21,22 +23,20 @@
          (files (list-transduce tflatten rcons tree)))
     files))
 
-(define* (reload-service name #:optional (path default-services-path)) name
-  (let* ((path (string-append path "/" name))
-         (args `("herd" "load" "root" ,path))
-         (pid (spawn "herd" args)))
-    (waitpid pid)))
+(define* (reload-service name #:optional (path default-services-path))
+  (let ((path (string-append path "/" name)))
+    (write-command (shepherd-command 'load 'root `(,path))
+                   (current-socket-file))))
 
 (define (remove-suffix str suffix)
-  (if (string-suffix? suffix file)
-    (string-drop-right file (string-length suffix))
-    file))
+  (if (string-suffix? suffix str)
+    (string-drop-right str (string-length suffix))
+    str))
 
 (define (unload-service file)
-  (let* ((name (remove-suffix file ".scm"))
-         (args `("herd" "unload" "root" ,name))
-         (pid (spawn "herd" args)))
-    (waitpid pid)))
+  (let ((name (remove-suffix file ".scm")))
+    (write-command (shepherd-command 'unload 'root `(,file))
+                   (current-socket-file))))
 
 (define (main . args)
   (watch-directory
