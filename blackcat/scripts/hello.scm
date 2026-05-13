@@ -7,4 +7,4 @@
   #:export (main))
 
 (define (main . args)
-   (format #t "hello ~a~%" (string-join args "")))
+   (format #t "hello ~a~%" (string-join args " ")))
