@@ -9,7 +9,14 @@
 (define default-services-path "/etc/shepherd.d")
 
 (define %core-services
-  '(agetty-tty1
+  '(seedrng
+    hwclock
+    udevadm
+    pkill
+    filesystems
+    halt-hook
+    system
+    agetty-tty1
     agetty-tty2
     agetty-tty3
     agetty-tty4
