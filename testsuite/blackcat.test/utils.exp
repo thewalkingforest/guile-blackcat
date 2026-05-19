@@ -1,0 +1,44 @@
+# Tests for (blackcat utils): get-uid, get-gid
+
+guile_loads "(blackcat utils)"
+
+# get-uid: integer pass-through
+guile_check "get-uid passes through exact integer 0" \
+    {(use-modules (blackcat utils)) (display (get-uid 0))} \
+    "0"
+
+guile_check "get-uid passes through exact integer 42" \
+    {(use-modules (blackcat utils)) (display (get-uid 42))} \
+    "42"
+
+# get-uid: inexact integer (e.g. 42.0) is coerced to exact via inexact->exact/truncate
+guile_check "get-uid truncates inexact integer 42.0 to 42" \
+    {(use-modules (blackcat utils)) (display (get-uid 42.0))} \
+    "42"
+
+# get-uid: non-number/non-string falls through to else -> #f
+guile_check "get-uid returns #f for boolean #t" \
+    {(use-modules (blackcat utils)) (display (get-uid #t))} \
+    "#f"
+
+guile_check "get-uid returns #f for symbol" \
+    {(use-modules (blackcat utils)) (display (get-uid 'nobody))} \
+    "#f"
+
+# get-gid: integer pass-through
+guile_check "get-gid passes through exact integer 0" \
+    {(use-modules (blackcat utils)) (display (get-gid 0))} \
+    "0"
+
+guile_check "get-gid passes through exact integer 99" \
+    {(use-modules (blackcat utils)) (display (get-gid 99))} \
+    "99"
+
+# get-gid: non-number/non-string -> #f
+guile_check "get-gid returns #f for boolean #f" \
+    {(use-modules (blackcat utils)) (display (get-gid #f))} \
+    "#f"
+
+guile_check "get-gid returns #f for symbol" \
+    {(use-modules (blackcat utils)) (display (get-gid 'wheel))} \
+    "#f"

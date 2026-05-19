@@ -1,0 +1,45 @@
+# Tool init for guile-blackcat DejaGnu tests.
+# Sourced automatically by runtest before any .exp test files.
+
+if {![info exists GUILE]} {
+    set GUILE guile
+}
+
+# Project root: one level above the testsuite/ directory.
+set module_root [file normalize [file join $srcdir ..]]
+
+# Run EXPR under guile -L $module_root --no-auto-compile.
+# Returns a two-element list: {exit_code stdout}.
+# Stderr is discarded; Guile's "note: source file newer than compiled" warnings
+# would otherwise cause TCL's exec to raise an error even on exit 0.
+proc guile_run {expr} {
+    global GUILE module_root
+    set rc [catch {exec $GUILE -L $module_root --no-auto-compile -c $expr 2>/dev/null} out]
+    return [list $rc $out]
+}
+
+# Assert that EXPR produces exactly EXPECTED on stdout.
+proc guile_check {description expr expected} {
+    set r   [guile_run $expr]
+    set rc  [lindex $r 0]
+    set out [lindex $r 1]
+    if {$rc != 0} {
+        fail "$description (guile exited non-zero; expr: $expr)"
+    } elseif {$out eq $expected} {
+        pass $description
+    } else {
+        fail "$description\n  got:      '$out'\n  expected: '$expected'"
+    }
+}
+
+# Assert that MODULE can be loaded without error.
+proc guile_loads {module} {
+    set r   [guile_run "(use-modules $module)"]
+    set rc  [lindex $r 0]
+    set out [lindex $r 1]
+    if {$rc == 0} {
+        pass "$module loads"
+    } else {
+        fail "$module loads\n  error: $out"
+    }
+}

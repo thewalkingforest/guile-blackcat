@@ -1,0 +1,23 @@
+# Tests for (blackcat inotify)
+
+guile_loads "(blackcat inotify)"
+
+guile_check "make-inotify returns an inotify record" \
+    {(use-modules (blackcat inotify)) (display (inotify? (make-inotify)))} \
+    "#t"
+
+guile_check "inotify-watches returns a hash table" \
+    {(use-modules (blackcat inotify)) (display (hash-table? (inotify-watches (make-inotify))))} \
+    "#t"
+
+guile_check "non-inotify value fails inotify? predicate" \
+    {(use-modules (blackcat inotify)) (display (inotify? 'not-an-inotify))} \
+    "#f"
+
+guile_check "inotify-watch? rejects non-watch value" \
+    {(use-modules (blackcat inotify)) (display (inotify-watch? 42))} \
+    "#f"
+
+guile_check "inotify-event? rejects non-event value" \
+    {(use-modules (blackcat inotify)) (display (inotify-event? #f))} \
+    "#f"

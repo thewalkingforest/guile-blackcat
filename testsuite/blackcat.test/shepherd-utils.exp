@@ -1,0 +1,37 @@
+# Tests for (blackcat shepherd utils): setup-dir
+
+guile_loads "(blackcat shepherd utils)"
+
+# setup-dir returns #f when uid/gid resolve to #f (symbol is not a string or integer)
+guile_check "setup-dir returns #f for invalid uid (symbol)" \
+    {(use-modules (blackcat shepherd utils))
+     (display (setup-dir "/tmp/blackcat-test-dir" #o755 'no-such-user))} \
+    "#f"
+
+guile_check "setup-dir returns #f for invalid gid (symbol)" \
+    {(use-modules (blackcat shepherd utils))
+     (display (setup-dir "/tmp/blackcat-test-dir" #o755 0 'no-such-group))} \
+    "#f"
+
+# setup-dir creates a directory and returns #t (uses current uid/gid via integer 0 only as root;
+# use the invoking user's uid/gid to avoid needing root)
+set test_dir "/tmp/blackcat-dejagnu-[pid]"
+set uid_expr "(passwd:uid (getpwuid (getuid)))"
+set gid_expr "(group:gid (getgrgid (getgid)))"
+
+guile_check "setup-dir creates directory and returns #t" \
+    "(use-modules (blackcat shepherd utils))
+     (let ((uid $uid_expr)
+           (gid $gid_expr))
+       (display (setup-dir \"$test_dir\" #o755 uid gid)))" \
+    "#t"
+
+guile_check "setup-dir is idempotent on existing directory" \
+    "(use-modules (blackcat shepherd utils))
+     (let ((uid $uid_expr)
+           (gid $gid_expr))
+       (display (setup-dir \"$test_dir\" #o755 uid gid)))" \
+    "#t"
+
+# Clean up the temporary directory
+catch {file delete $test_dir}

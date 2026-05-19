@@ -16,7 +16,9 @@ GOBJECTS = $(SOURCES:.scm=.go)
 GUILE_WARNINGS = -Wunbound-variable -Warity-mismatch -Wformat
 GUILD_FLAGS = $(GUILE_WARNINGS) -L .
 
-.PHONY: all clean install uninstall check
+RUNTEST ?= runtest
+
+.PHONY: all clean install uninstall check check-dejagnu
 
 all: $(GOBJECTS)
 
@@ -53,3 +55,6 @@ check:
 	$(GUILE) -L . -c "(use-modules (blackcat config)) (display %blackcat-version) (newline)"
 	$(GUILE) -L . -c "(use-modules (blackcat utils))"
 	$(GUILE) -L . -c "(use-modules (blackcat shepherd utils))"
+
+check:
+	GUILE=$(GUILE) $(RUNTEST) --tool blackcat --srcdir $(abspath testsuite)

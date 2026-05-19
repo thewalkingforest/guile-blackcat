@@ -1,0 +1,11 @@
+# Tests for (blackcat config)
+
+guile_loads "(blackcat config)"
+
+guile_check "version is 0.1.0" \
+    {(use-modules (blackcat config)) (display %blackcat-version)} \
+    "0.1.0"
+
+guile_check "version is a string" \
+    {(use-modules (blackcat config)) (display (string? %blackcat-version))} \
+    "#t"

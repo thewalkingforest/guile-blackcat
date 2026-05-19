@@ -1,0 +1,8 @@
+# Tests for (blackcat watch)
+# watch-directory runs an infinite event loop so only module loading is verified here.
+
+guile_loads "(blackcat watch)"
+
+guile_check "watch-directory is a procedure" \
+    {(use-modules (blackcat watch)) (display (procedure? watch-directory))} \
+    "#t"

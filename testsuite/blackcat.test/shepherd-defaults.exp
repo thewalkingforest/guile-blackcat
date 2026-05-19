@@ -1,0 +1,30 @@
+# Tests for (blackcat shepherd defaults)
+
+guile_loads "(blackcat shepherd defaults)"
+
+guile_check "default-services-path is /etc/shepherd.d" \
+    {(use-modules (blackcat shepherd defaults)) (display default-services-path)} \
+    "/etc/shepherd.d"
+
+guile_check "%core-services is a list" \
+    {(use-modules (blackcat shepherd defaults)) (display (list? %core-services))} \
+    "#t"
+
+guile_check "%core-services has 14 entries" \
+    {(use-modules (blackcat shepherd defaults)) (display (length %core-services))} \
+    "14"
+
+guile_check "%core-services includes service-autoloader" \
+    {(use-modules (blackcat shepherd defaults))
+     (display (if (memq 'service-autoloader %core-services) #t #f))} \
+    "#t"
+
+guile_check "%core-services includes agetty-tty1" \
+    {(use-modules (blackcat shepherd defaults))
+     (display (if (memq 'agetty-tty1 %core-services) #t #f))} \
+    "#t"
+
+guile_check "%core-services includes halt-hook" \
+    {(use-modules (blackcat shepherd defaults))
+     (display (if (memq 'halt-hook %core-services) #t #f))} \
+    "#t"
