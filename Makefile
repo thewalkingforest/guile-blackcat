@@ -18,7 +18,7 @@ GUILD_FLAGS = $(GUILE_WARNINGS) -L .
 
 RUNTEST ?= runtest
 
-.PHONY: all clean install uninstall check check-dejagnu
+.PHONY: all clean install uninstall check check-dejagnu check-modules
 
 all: $(GOBJECTS)
 
@@ -51,10 +51,12 @@ uninstall:
 	-find $(GUILE_SITE)/blackcat $(GUILE_OBJ_DIR)/blackcat \
 		-depth -type d -empty -delete 2>/dev/null
 
-check:
+check: check-modules check-dejagnu
+
+check-modules:
 	$(GUILE) -L . -c "(use-modules (blackcat config)) (display %blackcat-version) (newline)"
 	$(GUILE) -L . -c "(use-modules (blackcat utils))"
 	$(GUILE) -L . -c "(use-modules (blackcat shepherd utils))"
 
-check:
+check-dejagnu:
 	GUILE=$(GUILE) $(RUNTEST) --tool blackcat --srcdir $(abspath testsuite)
