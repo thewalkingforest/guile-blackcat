@@ -6,10 +6,10 @@
   #:declarative? #f
   #:use-module (blackcat shepherd defaults)
   #:use-module (ice-9 ftw)
-  #:export (load-services-dir)
+  #:use-module (ice-9 optargs)
   #:re-export (%core-services))
 
-(define* (load-services-dir #:optional (path (default-services-path)))
+(define*-public (load-services-dir #:optional (path (default-services-path)))
   (for-each
     (lambda (file)
       (load (string-append path "/" file)))

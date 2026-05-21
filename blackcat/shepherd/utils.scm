@@ -4,9 +4,9 @@
 
 (define-module (blackcat shepherd utils)
   #:use-module (blackcat utils)
-  #:export (setup-dir))
+  #:use-module (ice-9 optargs))
 
-(define* (setup-dir path mode uid' #:optional (gid' uid'))
+(define*-public (setup-dir path mode uid' #:optional (gid' uid'))
   "Ensure directory exists at PATH with MODE and owned by UID:GID"
   (let ((uid (get-uid uid'))
         (gid (get-gid gid')))
