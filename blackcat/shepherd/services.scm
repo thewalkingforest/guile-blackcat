@@ -27,7 +27,7 @@
     #:start (make-forkexec-constructor
               '("/usr/libexec/elogind/elogind.wrapper"))
     #:stop (make-kill-destructor)
-    #:respawn? #t)))
+    #:respawn? #t))
 
 (define-public emptty
   (service
@@ -35,14 +35,14 @@
     #:start (make-forkexec-constructor
               '("setsid" "/usr/bin/emptty" "-d"))
     #:stop (make-kill-destructor)
-    #:respawn? #t)))
+    #:respawn? #t))
 
 (define-public mcron
   (service
     '(mcron)
     #:start (make-forkexec-constructor '("mcron"))
     #:stop (make-kill-destructor)
-    #:respawn? #t)))
+    #:respawn? #t))
 
 (define-public network-manager
   (service
@@ -51,7 +51,7 @@
     #:start (make-forkexec-constructor
               '("NetworkManager" "-n"))
     #:stop (make-kill-destructor)
-    #:respawn? #t)))
+    #:respawn? #t))
 
 (define-public openntpd
   (service
@@ -60,7 +60,7 @@
     #:start (make-forkexec-constructor
               '("openntpd" "-d"))
     #:stop (make-kill-destructor)
-    #:respawn? #t)))
+    #:respawn? #t))
 
 (define-public seatd
   (service
@@ -68,7 +68,7 @@
     #:start (make-forkexec-constructor
               '("seatd" "-g" "_seatd"))
     #:stop (make-kill-destructor)
-    #:respawn? #t)))
+    #:respawn? #t))
 
 (define-public sshd-inetd
   (service
@@ -80,7 +80,7 @@
                     (endpoint (make-socket-address AF_INET6 IN6ADDR_ANY 22)))
               #:max-connections 10)
     #:stop (make-inetd-destructor)
-    #:respawn? #t)))
+    #:respawn? #t))
 
 (define-public sshd
   (service
@@ -88,7 +88,7 @@
     #:start (make-forkexec-constructor
               '("sshd" "-D"))
     #:stop (make-kill-destructor)
-    #:respawn? #t)))
+    #:respawn? #t))
 
 (define-public turstiled
   (service
@@ -96,7 +96,7 @@
     #:start (make-forkexec-constructor
               '("turstiled"))
     #:stop (make-kill-destructor)
-    #:respawn? #t)))
+    #:respawn? #t))
 
 (define-public xdm
   (service
@@ -104,4 +104,4 @@
     #:start (make-forkexec-constructor
               '("xdm" "-error" "/dev/stdout" "-nodaemon"))
     #:stop (make-kill-destructor)
-    #:respawn? #t)))
+    #:respawn? #t))
