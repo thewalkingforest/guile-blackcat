@@ -3,7 +3,17 @@
 ; file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 (define-module (blackcat shepherd services desktop)
-  #:use-module (shepherd service))
+  #:use-module (shepherd service)
+  #:use-module (blackcat shepherd utils))
+
+(define-public (lightdm-service)
+  (setup-dir "/run/lightdm" #o711 "lightdm")
+  (service
+    '(lightdm)
+    #:requirement '(dbus)
+    #:start (make-forkexec-constructor '("lightdm"))
+    #:stop (make-kill-destructor)
+    #:respawn? #t))
 
 (define-public emptty-service
   (service

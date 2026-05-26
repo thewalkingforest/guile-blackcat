@@ -3,7 +3,17 @@
 ; file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 (define-module (blackcat shepherd services session)
-  #:use-module (shepherd service))
+  #:use-module (shepherd service)
+  #:use-module (blackcat shepherd utils))
+
+(define-public (dbus-service)
+  (setup-dir "/run/dbus" #o755 "dbus")
+  (service
+    '(dbus)
+    #:start (make-forkexec-constructor
+              '("dbus-daemon" "--system" "--nofork" "--nopidfile"))
+    #:stop (make-kill-destructor)
+    #:respawn? #t))
 
 (define-public elogind-service
   (service
