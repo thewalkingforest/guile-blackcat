@@ -5,7 +5,7 @@
 (define-module (blackcat shepherd services)
   #:use-module (shepherd service))
 
-(define-public acpid
+(define-public acpid-service
   (service
     '(acpid)
     #:start (make-forkexec-constructor
@@ -13,9 +13,17 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define-public mcron
+(define-public mcron-service
   (service
     '(mcron)
     #:start (make-forkexec-constructor '("mcron"))
+    #:stop (make-kill-destructor)
+    #:respawn? #t))
+
+(define-public guix-daemon-service
+  (service
+    '(guix-daemon)
+    #:start (make-forkexec-constructor
+             '("guix-daemon" "--build-users-group=guixbuild"))
     #:stop (make-kill-destructor)
     #:respawn? #t))
