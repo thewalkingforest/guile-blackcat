@@ -3,7 +3,10 @@
 ; file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 (define-module (blackcat shepherd services)
-  #:use-module (shepherd service))
+  #:use-module (blackcat shepherd defaults)
+  #:use-module (shepherd service)
+  #:re-export (%core-services
+               %core-services-service))
 
 (define-public acpid-service
   (service

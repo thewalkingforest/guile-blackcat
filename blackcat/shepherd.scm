@@ -6,8 +6,7 @@
   #:declarative? #f
   #:use-module (blackcat shepherd defaults)
   #:use-module (ice-9 ftw)
-  #:use-module (ice-9 optargs)
-  #:re-export (%core-services))
+  #:use-module (ice-9 optargs))
 
 (define*-public (load-services-dir #:optional (path (default-services-path)))
   (for-each
