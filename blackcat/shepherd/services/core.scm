@@ -59,7 +59,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define seedrng-service
+(define-public seedrng-service
   (service
     '(seedrng)
     #:requirement '(hwclock)
@@ -67,7 +67,7 @@
              (system* "seedrng")
              #f)))
 
-(define hwclock-service
+(define-public hwclock-service
   (service
     '(hwclock)
     #:requirement '(udevadm)
@@ -83,7 +83,7 @@
 ;              (system "halt -w")
 ;              #f)))
 
-(define udevadm-service
+(define-public udevadm-service
   (service
     '(udevadm)
     #:requirement '(pkill)
@@ -91,7 +91,7 @@
              (system* "udevadm" "control" "--exit")
              #f)))
 
-(define pkill-service
+(define-public pkill-service
   (service
     '(pkill)
     #:requirement '(filesystems)
@@ -100,7 +100,7 @@
              (system* "pkill" "--inverse" "-s0,1" "-KILL")
              #f)))
 
-(define filesystems-service
+(define-public filesystems-service
   (service
     '(filesystems)
     #:stop (lambda (_sig . _rst)
@@ -111,7 +111,7 @@
                (waitpid pid))
              #f)))
 
-(define halt-hook-service
+(define-public halt-hook-service
   (service
     '(halt-hook)
     #:requirement '(seedrng
@@ -119,6 +119,15 @@
                      udevadm
                      pkill
                      filesystems)))
+
+(define-public service-autoloader-service
+  (service
+    '(service-autoloader)
+    #:requirement '(system)
+    #:start (make-forkexec-constructor
+              '("service-autoloader"))
+    #:stop (make-kill-destructor)
+    #:respawn? #t))
 
 (define shutdown-services-service
   '(seedrng-service
@@ -128,17 +137,9 @@
     filesystems-service
     halt-hook-service))
 
-(register-services shutdown-services)
-
-(register-services (list
-  (service
-    '(service-autoloader)
-    #:requirement '(system)
-    #:start (make-forkexec-constructor
-              '("service-autoloader"))
-    #:stop (make-kill-destructor)
-    #:respawn? #t)))
+(register-services shutdown-services-service)
 
 (register-services
+ (list
   (service
-    '(system)))
+    '(system))))
