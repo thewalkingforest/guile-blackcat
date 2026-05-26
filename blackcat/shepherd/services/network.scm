@@ -7,7 +7,7 @@
 
 (define-public dhcpcd-service
   (service
-    '(dhcpcd)
+    '(dhcpcd dns)
     #:start (make-forkexec-constructor
               '("dhcpcd" "-B" "-M"))
     #:stop (make-kill-destructor)
@@ -15,7 +15,7 @@
 
 (define-public network-manager-service
   (service
-    '(network-manager)
+    '(network-manager dns)
     #:requirement '(dbus)
     #:start (make-forkexec-constructor
               '("NetworkManager" "-n"))
