@@ -1,0 +1,30 @@
+; This Source Code Form is subject to the terms of the Mozilla Public
+; License, v. 2.0. If a copy of the MPL was not distributed with this
+; file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+(define-module (blackcat shepherd services session)
+  #:use-module (shepherd service))
+
+(define-public elogind
+  (service
+    '(elogind)
+    #:start (make-forkexec-constructor
+              '("/usr/libexec/elogind/elogind.wrapper"))
+    #:stop (make-kill-destructor)
+    #:respawn? #t))
+
+(define-public seatd
+  (service
+    '(seatd)
+    #:start (make-forkexec-constructor
+              '("seatd" "-g" "_seatd"))
+    #:stop (make-kill-destructor)
+    #:respawn? #t))
+
+(define-public turstiled
+  (service
+    '(turstiled)
+    #:start (make-forkexec-constructor
+              '("turstiled"))
+    #:stop (make-kill-destructor)
+    #:respawn? #t))
