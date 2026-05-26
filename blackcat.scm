@@ -4,12 +4,4 @@
 
 (define-module (blackcat)
   #:use-module (blackcat config)
-  #:use-module (blackcat watch)
-  #:use-module (blackcat inotify)
-  #:use-module (blackcat shepherd)
-  #:use-module (blackcat scripts hello)
-  #:use-module (blackcat scripts autoload)
-  #:use-module (blackcat shepherd utils)
-  #:use-module (blackcat shepherd defaults)
-  #:use-module (blackcat shepherd services)
   #:re-export (%blackcat-version))

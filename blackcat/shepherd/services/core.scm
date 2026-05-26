@@ -105,7 +105,7 @@
     '(filesystems)
     #:stop (lambda (_sig . _rst)
              (system* "swapoff" "-a")
-             (system "umount" "-r" "-a" "-t" "nosysfs,noproc,nodevtmpfs,notmpfs")
+             (system* "umount" "-r" "-a" "-t" "nosysfs,noproc,nodevtmpfs,notmpfs")
              (let* ((env (cons* "LIBMOUNT_FORCE_MOUNT2=always" (environ)))
                     (pid (spawn "mount" '("mount" "-o" "remount,ro" "/") #:environment env)))
                (waitpid pid))
@@ -129,17 +129,15 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define shutdown-services-service
-  '(seedrng-service
+(define-public shutdown-services
+  (list
+    seedrng-service
     hwclock-service
     udevadm-service
     pkill-service
     filesystems-service
     halt-hook-service))
 
-(register-services shutdown-services-service)
-
-(register-services
- (list
+(define-public system-service
   (service
-    '(system))))
+    '(system)))

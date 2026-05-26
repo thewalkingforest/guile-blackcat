@@ -24,7 +24,9 @@ all: $(GOBJECTS)
 
 blackcat.go: blackcat/config.go
 blackcat/scripts/autoload.go: blackcat/shepherd/defaults.go blackcat/watch.go
-blackcat/shepherd/services.go: blackcat/shepherd/defaults.go blackcat/shepherd/services/core.scm
+blackcat/shepherd.go: blackcat/shepherd/defaults.go
+blackcat/shepherd/defaults.go: blackcat/shepherd/services/core.scm
+blackcat/shepherd/services.go: blackcat/shepherd/defaults.go
 blackcat/shepherd/utils.go: blackcat/utils.go
 blackcat/utils.go: blackcat/config.go
 blackcat/watch.go: blackcat/inotify.go
