@@ -5,7 +5,7 @@
 (define-module (blackcat shepherd services core)
   #:use-module (shepherd service))
 
-(define-public agetty-tty1
+(define-public agetty-tty1-service
   (service
     '(agetty-tty1)
     #:requirement '(system)
@@ -14,7 +14,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define-public agetty-tty2
+(define-public agetty-tty2-service
   (service
     '(agetty-tty2)
     #:requirement '(system)
@@ -23,7 +23,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define-public agetty-tty3
+(define-public agetty-tty3-service
   (service
     '(agetty-tty3)
     #:requirement '(system)
@@ -32,7 +32,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define-public agetty-tty4
+(define-public agetty-tty4-service
   (service
     '(agetty-tty4)
     #:requirement '(system)
@@ -41,7 +41,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define-public agetty-tty5
+(define-public agetty-tty5-service
   (service
     '(agetty-tty5)
     #:requirement '(system)
@@ -50,7 +50,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define-public agetty-tty6
+(define-public agetty-tty6-service
   (service
     '(agetty-tty6)
     #:requirement '(system)
@@ -59,7 +59,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define seedrng
+(define seedrng-service
   (service
     '(seedrng)
     #:requirement '(hwclock)
@@ -67,7 +67,7 @@
              (system* "seedrng")
              #f)))
 
-(define hwclock
+(define hwclock-service
   (service
     '(hwclock)
     #:requirement '(udevadm)
@@ -83,7 +83,7 @@
 ;              (system "halt -w")
 ;              #f)))
 
-(define udevadm
+(define udevadm-service
   (service
     '(udevadm)
     #:requirement '(pkill)
@@ -91,7 +91,7 @@
              (system* "udevadm" "control" "--exit")
              #f)))
 
-(define pkill
+(define pkill-service
   (service
     '(pkill)
     #:requirement '(filesystems)
@@ -100,7 +100,7 @@
              (system* "pkill" "--inverse" "-s0,1" "-KILL")
              #f)))
 
-(define filesystems
+(define filesystems-service
   (service
     '(filesystems)
     #:stop (lambda (_sig . _rst)
@@ -111,7 +111,7 @@
                (waitpid pid))
              #f)))
 
-(define halt-hook
+(define halt-hook-service
   (service
     '(halt-hook)
     #:requirement '(seedrng
@@ -120,13 +120,13 @@
                      pkill
                      filesystems)))
 
-(define shutdown-services
-  '(seedrng
-    hwclock
-    udevadm
-    pkill
-    filesystems
-    halt-hook))
+(define shutdown-services-service
+  '(seedrng-service
+    hwclock-service
+    udevadm-service
+    pkill-service
+    filesystems-service
+    halt-hook-service))
 
 (register-services shutdown-services)
 

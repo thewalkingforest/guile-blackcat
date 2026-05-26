@@ -5,7 +5,7 @@
 (define-module (blackcat shepherd services session)
   #:use-module (shepherd service))
 
-(define-public elogind
+(define-public elogind-service
   (service
     '(elogind)
     #:start (make-forkexec-constructor
@@ -13,7 +13,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define-public seatd
+(define-public seatd-service
   (service
     '(seatd)
     #:start (make-forkexec-constructor
@@ -21,7 +21,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define-public turstiled
+(define-public turstiled-service
   (service
     '(turstiled)
     #:start (make-forkexec-constructor

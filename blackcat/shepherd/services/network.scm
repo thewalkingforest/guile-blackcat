@@ -5,7 +5,7 @@
 (define-module (blackcat shepherd services network)
   #:use-module (shepherd service))
 
-(define-public dhcpcd
+(define-public dhcpcd-service
   (service
     '(dhcpcd)
     #:start (make-forkexec-constructor
@@ -13,7 +13,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define-public network-manager
+(define-public network-manager-service
   (service
     '(network-manager)
     #:requirement '(dbus)
@@ -22,7 +22,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define-public openntpd
+(define-public openntpd-service
   (service
     '(openntpd)
     #:requirement '(dns)
@@ -31,7 +31,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define-public sshd-inetd
+(define-public sshd-inetd-service
   (service
     '(sshd-inetd)
     #:requirement '(halt-hook)
@@ -43,7 +43,7 @@
     #:stop (make-inetd-destructor)
     #:respawn? #t))
 
-(define-public sshd
+(define-public sshd-service
   (service
     '(sshd)
     #:start (make-forkexec-constructor

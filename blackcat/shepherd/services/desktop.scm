@@ -5,7 +5,7 @@
 (define-module (blackcat shepherd services desktop)
   #:use-module (shepherd service))
 
-(define-public emptty
+(define-public emptty-service
   (service
     '(emptty)
     #:start (make-forkexec-constructor
@@ -13,7 +13,7 @@
     #:stop (make-kill-destructor)
     #:respawn? #t))
 
-(define-public xdm
+(define-public xdm-service
   (service
     '(xdm)
     #:start (make-forkexec-constructor

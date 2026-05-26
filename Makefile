@@ -38,10 +38,12 @@ clean:
 install: $(GOBJECTS)
 	@echo "Installing Guile source files to $(GUILE_SITE)"
 	@for f in $(SOURCES); do \
+		echo "Installing $$f to $(GUILE_SITE)/$$f"; \
 		install -Dm644 $$f $(GUILE_SITE)/$$f; \
 	done
 	@echo "Installing compiled files to $(GUILE_OBJ_DIR)"
 	@for f in $(GOBJECTS); do \
+		echo "Installing $$f to $(GUILE_OBJ_DIR)/$$f"; \
 		install -Dm644 $$f $(GUILE_OBJ_DIR)/$$f; \
 	done
 
