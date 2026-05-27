@@ -5,6 +5,8 @@ Guile library for use in Blackcat linux scripts and other stuff.
 ## Build Dependencies
 
 - [Guile 3.0](https://www.gnu.org/software/guile)
+- [shepherd](https://shepherding.services/)
+- autotools
 - make
 
 ## License
