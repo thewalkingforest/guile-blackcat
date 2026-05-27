@@ -25,7 +25,8 @@
 
 (define* (reload-service name #:optional (path default-services-path))
   (let ((path (string-append path "/" name)))
-    (write-command (shepherd-command 'load 'root #:arguments `(,path)))))
+    (write-command (shepherd-command 'load 'root #:arguments `(,path))
+                   (current-socket-file))))
 
 (define (remove-suffix str suffix)
   (if (string-suffix? suffix str)
@@ -34,7 +35,8 @@
 
 (define (unload-service file)
   (let ((name (remove-suffix file ".scm")))
-    (write-command (shepherd-command 'unload 'root #:arguments `(,file)))))
+    (write-command (shepherd-command 'unload 'root #:arguments `(,file))
+                   (current-socket-file))))
 
 (define (main . args)
   (watch-directory
