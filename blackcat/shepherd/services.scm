@@ -8,14 +8,6 @@
   #:re-export (%core-services
                %core-services-service))
 
-(define-public acpid-service
-  (service
-    '(acpid)
-    #:start (make-forkexec-constructor
-              '("acpid" "-f" "-l"))
-    #:stop (make-kill-destructor)
-    #:respawn? #t))
-
 (define-public mcron-service
   (service
     '(mcron)
