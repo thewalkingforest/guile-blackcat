@@ -20,8 +20,7 @@
     agetty-tty3
     agetty-tty4
     agetty-tty5
-    agetty-tty6
-    service-autoloader))
+    agetty-tty6))
 
 (define-public %core-services-service
   (list
@@ -37,5 +36,4 @@
     agetty-tty3-service
     agetty-tty4-service
     agetty-tty5-service
-    agetty-tty6-service
-    service-autoloader-service))
+    agetty-tty6-service))
