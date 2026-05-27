@@ -25,6 +25,8 @@ all: $(GOBJECTS)
 blackcat.go: blackcat/config.go
 blackcat/scripts/autoload.go: blackcat/shepherd/defaults.go blackcat/watch.go
 blackcat/shepherd.go: blackcat/shepherd/defaults.go
+blackcat/shepherd/defaults.go: blackcat/shepherd/services/core.scm
+blackcat/shepherd/services.go: blackcat/shepherd/defaults.go
 blackcat/shepherd/utils.go: blackcat/utils.go
 blackcat/utils.go: blackcat/config.go
 blackcat/watch.go: blackcat/inotify.go
@@ -38,10 +40,12 @@ clean:
 install: $(GOBJECTS)
 	@echo "Installing Guile source files to $(GUILE_SITE)"
 	@for f in $(SOURCES); do \
+		echo "Installing $$f to $(GUILE_SITE)/$$f"; \
 		install -Dm644 $$f $(GUILE_SITE)/$$f; \
 	done
 	@echo "Installing compiled files to $(GUILE_OBJ_DIR)"
 	@for f in $(GOBJECTS); do \
+		echo "Installing $$f to $(GUILE_OBJ_DIR)/$$f"; \
 		install -Dm644 $$f $(GUILE_OBJ_DIR)/$$f; \
 	done
 
