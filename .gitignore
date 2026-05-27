@@ -1,2 +1,8 @@
 **/*.go
 *.sum
+configure*
+Makefile
+Makefile.in
+config.status
+build-aux/
+autom4te.cache/
