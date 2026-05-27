@@ -28,7 +28,7 @@ GOBJECTS = $(nobase_dist_guilemodule_DATA:.scm=.go)
 
 nobase_guileccache_DATA = $(GOBJECTS)
 
-GUILE_WARNINGS = -Wunbound-variable -Warity-mismatch -Wformat
+GUILE_WARNINGS = -W3
 
 # GNU Make pattern rule: compile each .scm to a .go in the build directory.
 # GUILE_LOAD_COMPILED_PATH=. lets guild find already-built deps in the build dir.
