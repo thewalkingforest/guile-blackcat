@@ -35,7 +35,7 @@
 
 (define (unload-service file)
   (let ((name (remove-suffix file ".scm")))
-    (write-command (shepherd-command 'unload 'root #:arguments `(,file))
+    (write-command (shepherd-command 'unload 'root #:arguments `(,name))
                    (current-socket-file))))
 
 (define (main . args)
