@@ -8,5 +8,8 @@ dnl Require Guile 3.0 and locate the guile/guild binaries + effective version.
 GUILE_PKG([3.0])
 GUILE_PROGS
 
+dnl Require the GNU Shepherd Guile library.
+GUILE_MODULE_REQUIRED([shepherd])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
