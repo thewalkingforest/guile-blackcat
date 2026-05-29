@@ -1,6 +1,6 @@
-; This Source Code Form is subject to the terms of the Mozilla Public
-; License, v. 2.0. If a copy of the MPL was not distributed with this
-; file, You can obtain one at https://mozilla.org/MPL/2.0/.
+;; This Source Code Form is subject to the terms of the Mozilla Public
+;; License, v. 2.0. If a copy of the MPL was not distributed with this
+;; file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 (define-module (blackcat shepherd services desktop)
   #:use-module (shepherd service)
@@ -9,26 +9,26 @@
 (define-public (lightdm-service)
   (setup-dir "/run/lightdm" #o711 "lightdm")
   (service
-    '(lightdm)
-    #:requirement '(dbus system)
-    #:start (make-forkexec-constructor '("lightdm"))
-    #:stop (make-kill-destructor)
-    #:respawn? #t))
+   '(lightdm)
+   #:requirement '(dbus system)
+   #:start (make-forkexec-constructor '("lightdm"))
+   #:stop (make-kill-destructor)
+   #:respawn? #t))
 
 (define-public emptty-service
   (service
-    '(emptty)
-    #:requirement '(system)
-    #:start (make-forkexec-constructor
-              '("setsid" "/usr/bin/emptty" "-d"))
-    #:stop (make-kill-destructor)
-    #:respawn? #t))
+   '(emptty)
+   #:requirement '(system)
+   #:start (make-forkexec-constructor
+            '("setsid" "/usr/bin/emptty" "-d"))
+   #:stop (make-kill-destructor)
+   #:respawn? #t))
 
 (define-public xdm-service
   (service
-    '(xdm)
-    #:requirement '(system)
-    #:start (make-forkexec-constructor
-              '("xdm" "-error" "/dev/stdout" "-nodaemon"))
-    #:stop (make-kill-destructor)
-    #:respawn? #t))
+   '(xdm)
+   #:requirement '(system)
+   #:start (make-forkexec-constructor
+            '("xdm" "-error" "/dev/stdout" "-nodaemon"))
+   #:stop (make-kill-destructor)
+   #:respawn? #t))

@@ -1,53 +1,53 @@
-; This Source Code Form is subject to the terms of the Mozilla Public
-; License, v. 2.0. If a copy of the MPL was not distributed with this
-; file, You can obtain one at https://mozilla.org/MPL/2.0/.
+;; This Source Code Form is subject to the terms of the Mozilla Public
+;; License, v. 2.0. If a copy of the MPL was not distributed with this
+;; file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 (define-module (blackcat shepherd services network)
   #:use-module (shepherd service))
 
 (define-public dhcpcd-service
   (service
-    '(dhcpcd dns)
-    #:requirement '(system)
-    #:start (make-forkexec-constructor
-              '("dhcpcd" "-B" "-M"))
-    #:stop (make-kill-destructor)
-    #:respawn? #t))
+   '(dhcpcd dns)
+   #:requirement '(system)
+   #:start (make-forkexec-constructor
+            '("dhcpcd" "-B" "-M"))
+   #:stop (make-kill-destructor)
+   #:respawn? #t))
 
 (define-public network-manager-service
   (service
-    '(network-manager dns)
-    #:requirement '(dbus)
-    #:start (make-forkexec-constructor
-              '("NetworkManager" "-n"))
-    #:stop (make-kill-destructor)
-    #:respawn? #t))
+   '(network-manager dns)
+   #:requirement '(dbus)
+   #:start (make-forkexec-constructor
+            '("NetworkManager" "-n"))
+   #:stop (make-kill-destructor)
+   #:respawn? #t))
 
 (define-public openntpd-service
   (service
-    '(openntpd)
-    #:requirement '(dns)
-    #:start (make-forkexec-constructor
-              '("openntpd" "-d"))
-    #:stop (make-kill-destructor)
-    #:respawn? #t))
+   '(openntpd)
+   #:requirement '(dns)
+   #:start (make-forkexec-constructor
+            '("openntpd" "-d"))
+   #:stop (make-kill-destructor)
+   #:respawn? #t))
 
 (define-public sshd-inetd-service
   (service
-    '(sshd-inetd)
-    #:requirement '(halt-hook)
-    #:start (make-inetd-constructor
-              '("sshd" "-D" "-i")
-              (list (endpoint (make-socket-address AF_INET INADDR_ANY 22))
-                    (endpoint (make-socket-address AF_INET6 IN6ADDR_ANY 22)))
-              #:max-connections 10)
-    #:stop (make-inetd-destructor)
-    #:respawn? #t))
+   '(sshd-inetd)
+   #:requirement '(halt-hook)
+   #:start (make-inetd-constructor
+            '("sshd" "-D" "-i")
+            (list (endpoint (make-socket-address AF_INET INADDR_ANY 22))
+                  (endpoint (make-socket-address AF_INET6 IN6ADDR_ANY 22)))
+            #:max-connections 10)
+   #:stop (make-inetd-destructor)
+   #:respawn? #t))
 
 (define-public sshd-service
   (service
-    '(sshd)
-    #:start (make-forkexec-constructor
-              '("sshd" "-D"))
-    #:stop (make-kill-destructor)
-    #:respawn? #t))
+   '(sshd)
+   #:start (make-forkexec-constructor
+            '("sshd" "-D"))
+   #:stop (make-kill-destructor)
+   #:respawn? #t))
