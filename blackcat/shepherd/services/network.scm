@@ -8,6 +8,7 @@
 (define-public dhcpcd-service
   (service
     '(dhcpcd dns)
+    #:requirement '(system)
     #:start (make-forkexec-constructor
               '("dhcpcd" "-B" "-M"))
     #:stop (make-kill-destructor)

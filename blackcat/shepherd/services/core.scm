@@ -140,4 +140,5 @@
 
 (define-public system-service
   (service
-    '(system)))
+    '(system)
+    #:requirement '(halt-hook)))

@@ -10,6 +10,7 @@
   (setup-dir "/run/dbus" #o755 "dbus")
   (service
     '(dbus)
+    #:requirement '(system)
     #:start (make-forkexec-constructor
               '("dbus-daemon" "--system" "--nofork" "--nopidfile"))
     #:stop (make-kill-destructor)

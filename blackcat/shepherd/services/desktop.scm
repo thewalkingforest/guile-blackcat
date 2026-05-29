@@ -10,7 +10,7 @@
   (setup-dir "/run/lightdm" #o711 "lightdm")
   (service
     '(lightdm)
-    #:requirement '(dbus)
+    #:requirement '(dbus system)
     #:start (make-forkexec-constructor '("lightdm"))
     #:stop (make-kill-destructor)
     #:respawn? #t))
@@ -18,6 +18,7 @@
 (define-public emptty-service
   (service
     '(emptty)
+    #:requirement '(system)
     #:start (make-forkexec-constructor
               '("setsid" "/usr/bin/emptty" "-d"))
     #:stop (make-kill-destructor)
@@ -26,6 +27,7 @@
 (define-public xdm-service
   (service
     '(xdm)
+    #:requirement '(system)
     #:start (make-forkexec-constructor
               '("xdm" "-error" "/dev/stdout" "-nodaemon"))
     #:stop (make-kill-destructor)

@@ -8,6 +8,7 @@
 (define-public acpid-service
   (service
     '(acpid)
+    #:requirement '(system)
     #:start (make-forkexec-constructor
               '("acpid" "-f" "-l"))
     #:stop (make-kill-destructor)
