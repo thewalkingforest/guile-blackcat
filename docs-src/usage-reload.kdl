@@ -5,7 +5,9 @@ version "0.1.0"
 author "thewalkingforest"
 license "MPL-2.0"
 
-flag "-w --watch" help="Watch services for reloading"
-flag "-d --service-dir" help="Specify service directory"
+flag "-w, --watch" help="Watch services for reloading"
+flag "-d, --service-dir" help="Specify service directory"
+flag "    --unload-deleted" help="Unload services that are deleted on disk"
+flag "-h, --help" help="Print help message"
 
-arg "[service]" help="Specify service to reload"
+arg "[service..]" help="Specify services to reload"

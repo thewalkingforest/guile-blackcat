@@ -20,8 +20,8 @@
                           (service-dir (single-char #\d) (value #t))
                           (unload-deleted (value #f))
                           (help (single-char #\h))))
-(define reload-arg-spec-desc '((watch             "STL file to render")
-                               (service-dir       "STL file to render")
+(define reload-arg-spec-desc '((watch             "Watch services for reloading")
+                               (service-dir       "Specify service directory")
                                (unload-deleted    "Unload service if deleted")
                                (help              "Print this help message")))
 
