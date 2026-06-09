@@ -15,5 +15,8 @@ AM_CONDITIONAL([HAVE_USAGE], [test -n "$usage"])
 dnl Require the GNU Shepherd Guile library.
 GUILE_MODULE_REQUIRED([shepherd])
 
+dnl Require the mkusage library
+GUILE_MODULE_REQUIRED([mkusage])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

@@ -21,6 +21,7 @@ nobase_dist_guilemodule_DATA = \
   blackcat/shepherd/services/session.scm \
   blackcat/shepherd/services/system.scm \
   blackcat/scripts/autoload.scm \
+  blackcat/scripts/reload.scm \
   blackcat/scripts/hello.scm
 
 # Compiled .go bytecode objects — installed to the site-ccache tree.
@@ -39,6 +40,7 @@ GUILE_WARNINGS = -W3
 # Inter-module dependencies (mirrors the existing Makefile).
 blackcat.go: blackcat/config.go
 blackcat/scripts/autoload.go: blackcat/shepherd/defaults.go blackcat/watch.go
+blackcat/scripts/reload.go: blackcat/shepherd/defaults.go blackcat/watch.go
 blackcat/shepherd.go: blackcat/shepherd/defaults.go
 blackcat/shepherd/services.go: blackcat/shepherd/defaults.go
 blackcat/shepherd/utils.go: blackcat/utils.go
