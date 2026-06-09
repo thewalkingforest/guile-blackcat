@@ -8,6 +8,10 @@ dnl Require Guile 3.0 and locate the guile/guild binaries + effective version.
 GUILE_PKG([3.0])
 GUILE_PROGS
 
+dnl Check if the `usage` command is available
+AC_PATH_PROG([USAGE], [usage])
+AM_CONDITIONAL([HAVE_USAGE], [test -n "$usage"])
+
 dnl Require the GNU Shepherd Guile library.
 GUILE_MODULE_REQUIRED([shepherd])
 

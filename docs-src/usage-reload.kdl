@@ -1,0 +1,11 @@
+name "reload"
+bin "reload"
+about "reload shepherd services"
+version "0.1.0"
+author "thewalkingforest"
+license "MPL-2.0"
+
+flag "-w --watch" help="Watch services for reloading"
+flag "-d --service-dir" help="Specify service directory"
+
+arg "[service]" help="Specify service to reload"

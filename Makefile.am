@@ -45,7 +45,33 @@ blackcat/shepherd/utils.go: blackcat/utils.go
 blackcat/utils.go: blackcat/config.go
 blackcat/watch.go: blackcat/inotify.go
 
-all-local: $(GOBJECTS)
+if HAVE_USAGE
+COMPLETIONS= \
+	docs/completions/reload.bash \
+	docs/completions/reload.fish \
+	docs/completions/reload.zsh
+
+USAGE_RELOAD=docs-src/usage-reload.kdl
+
+docs/completions/reload.bash: $(USAGE_RELOAD)
+	$(USAGE) generate completion -f $< bash reload > $@
+
+docs/completions/reload.fish: $(USAGE_RELOAD)
+	$(USAGE) generate completion -f $< fish reload > $@
+
+docs/completions/reload.zsh: $(USAGE_RELOAD)
+	$(USAGE) generate completion -f $< zsh reload > $@
+
+MAN_PAGES=docs/man/reload.1
+docs/man/reload.1: $(USAGE_RELOAD)
+	$(USAGE) generate manpage -f $< -o $@
+
+else
+COMPLETIONS=
+MAN_PAGES=
+endif
+
+all-local: $(GOBJECTS) $(COMPLETIONS) $(MAN_PAGES)
 CLEANFILES = $(GOBJECTS)
 
 # ---------------------------------------------------------------------------
