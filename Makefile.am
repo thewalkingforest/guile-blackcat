@@ -1,10 +1,8 @@
 ACLOCAL_AMFLAGS = -I m4
 
-# Install paths follow the configured prefix/libdir, not pkg-config system dirs.
 guilemoduledir = $(prefix)/share/guile/site/$(GUILE_EFFECTIVE_VERSION)
 guileccachedir = $(libdir)/guile/$(GUILE_EFFECTIVE_VERSION)/site-ccache
 
-# Source .scm files — distributed and installed preserving subdirectory structure.
 nobase_dist_guilemodule_DATA = \
   blackcat.scm \
   blackcat/config.scm \
@@ -24,15 +22,14 @@ nobase_dist_guilemodule_DATA = \
   blackcat/scripts/reload.scm \
   blackcat/scripts/hello.scm
 
-# Compiled .go bytecode objects — installed to the site-ccache tree.
+TAGS_FILES = $(nobase_dist_guilemodule_DATA)
+
 GOBJECTS = $(nobase_dist_guilemodule_DATA:.scm=.go)
 
 nobase_guileccache_DATA = $(GOBJECTS)
 
 GUILE_WARNINGS = -W3
 
-# GNU Make pattern rule: compile each .scm to a .go in the build directory.
-# GUILE_LOAD_COMPILED_PATH=. lets guild find already-built deps in the build dir.
 %.go: %.scm
 	$(AM_V_GEN)GUILE_LOAD_COMPILED_PATH=. \
 	  $(GUILD) compile $(GUILE_WARNINGS) -L $(srcdir) -o $@ $<
