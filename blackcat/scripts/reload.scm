@@ -25,16 +25,9 @@
                                (unload-deleted    "Unload service if deleted")
                                (help              "Print this help message")))
 
-(define usage (make-usage reload-arg-spec #:spec-desc reload-arg-spec-desc))
-;; (define* (usage #:optional msg #:key exit-with)
-;;   (when msg (format #t "[ERROR] ~a~%" msg))
-;;   (format #t "Usage: reload [OPTIONS] [SERVICE..]~%")
-;;   (format #t "Options:~%")
-;;   (format #t "~2t-w, --watch             STL file to render~%")
-;;   (format #t "~2t-d, --service-dir       STL file to render~%")
-;;   (format #t "~2t    --unload-deleted    Unload service if deleted~%")
-;;   (format #t "~2t-h, --help              Print this help message~%")
-;;   (when exit-with (exit exit-with)))
+(define usage (make-usage reload-arg-spec
+                          #:spec-desc reload-arg-spec-desc
+                          #:name "reload"))
 
 (define-record-type <CliParams>
   (make-CliParams watch service-dir unload-deleted services)
