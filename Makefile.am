@@ -1,7 +1,7 @@
 ACLOCAL_AMFLAGS = -I m4
 
 # Install paths follow the configured prefix/libdir, not pkg-config system dirs.
-guilemoduledir = $(datadir)/guile/site/$(GUILE_EFFECTIVE_VERSION)
+guilemoduledir = $(prefix)/share/guile/site/$(GUILE_EFFECTIVE_VERSION)
 guileccachedir = $(libdir)/guile/$(GUILE_EFFECTIVE_VERSION)/site-ccache
 
 # Source .scm files — distributed and installed preserving subdirectory structure.
@@ -48,24 +48,22 @@ blackcat/utils.go: blackcat/config.go
 blackcat/watch.go: blackcat/inotify.go
 
 if HAVE_USAGE
-COMPLETIONS= \
-	docs/completions/reload.bash \
-	docs/completions/reload.fish \
-	docs/completions/reload.zsh
-
 USAGE_RELOAD=docs-src/usage-reload.kdl
 
-docs/completions/reload.bash: $(USAGE_RELOAD)
-	$(USAGE) generate completion -f $< bash reload > $@
+COMPLETIONS_DIR=docs/completions
+COMPLETION_SHELLS = bash fish zsh nu
+COMPLETIONS = $(COMPLETION_SHELLS:%=$(COMPLETIONS_DIR)/reload.%)
 
-docs/completions/reload.fish: $(USAGE_RELOAD)
-	$(USAGE) generate completion -f $< fish reload > $@
-
-docs/completions/reload.zsh: $(USAGE_RELOAD)
-	$(USAGE) generate completion -f $< zsh reload > $@
-
+MAN_PAGES_DIR=docs/man
 MAN_PAGES=docs/man/reload.1
-docs/man/reload.1: $(USAGE_RELOAD)
+
+$(COMPLETIONS_DIR) $(MAN_PAGES_DIR):
+	mkdir -p $@
+
+$(COMPLETIONS_DIR)/reload.%: $(USAGE_RELOAD) $(COMPLETIONS_DIR)
+	$(USAGE) generate completion -f $< $* reload > $@
+
+$(MAN_PAGES_DIR)/reload.1: $(USAGE_RELOAD) $(MAN_PAGES_DIR)
 	$(USAGE) generate manpage -f $< -o $@
 
 else
@@ -74,7 +72,7 @@ MAN_PAGES=
 endif
 
 all-local: $(GOBJECTS) $(COMPLETIONS) $(MAN_PAGES)
-CLEANFILES = $(GOBJECTS)
+CLEANFILES = $(GOBJECTS) $(COMPLETIONS) $(MAN_PAGES)
 
 # ---------------------------------------------------------------------------
 # Tests
