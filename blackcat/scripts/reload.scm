@@ -21,7 +21,7 @@
                           (unload-deleted (value #f))
                           (help (single-char #\h))))
 (define reload-arg-spec-desc '((watch             "Watch services for reloading")
-                               (service-directory        "Specify service directory")
+                               (service-directory "Specify service directory. Can be given more than one time")
                                (unload-deleted    "Unload service if deleted")
                                (help              "Print this help message")))
 
@@ -34,16 +34,23 @@
   (make-CliParams watch service-directory  unload-deleted services)
   CliParams?
   (watch CliParams-watch)
-  (service-directory CliParams-service-directory )
+  (services-directories CliParams-services-directories)
   (unload-deleted CliParams-unload-deleted)
   (services CliParams-services))
+
+(define (parse-service-directories opts)
+  (filter-map
+   (lambda (v)
+     (and (equal? (car v) 'service-directory)
+          (cdr v)))
+   opts))
 
 (define (parse-args args)
   (let* ((opts (getopt-long args
                             reload-arg-spec
                             #:stop-at-first-non-option #t))
          (watch (option-ref opts 'watch #f))
-         (service-directory  (option-ref opts 'service-directory  default-services-path))
+         (service-directories  (parse-service-directories opts))
          (unload-deleted (option-ref opts 'unload-deleted #f))
          (services (cdar opts))
          (help (option-ref opts 'help #f)))
@@ -82,7 +89,7 @@
   (when help (usage #:exit-with 0))
   (let ((watch (CliParams-watch params))
         (services (CliParams-services params))
-        (services-directory (CliParams-service-directory  params))
+        (services-directories (CliParams-services-directories  params))
         (unload-deleted (CliParams-unload-deleted params))
         )
     (cond
@@ -94,8 +101,8 @@
        (lambda (s) (display s))
        services)])
     (when watch
-      (watch-directory
-       services-directory
+      (watch-directories
+       services-directories
        (lambda (ty name)
          (match ty
            ((or 'create 'modify) (reload-service name services-directory))
