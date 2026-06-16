@@ -17,11 +17,11 @@
   #:use-module (mkusage))
 
 (define reload-arg-spec '((watch (single-char #\w) (value #f))
-                          (service-dir (single-char #\d) (value #t))
+                          (service-directory  (single-char #\d) (value #t))
                           (unload-deleted (value #f))
                           (help (single-char #\h))))
 (define reload-arg-spec-desc '((watch             "Watch services for reloading")
-                               (service-dir       "Specify service directory")
+                               (service-directory        "Specify service directory")
                                (unload-deleted    "Unload service if deleted")
                                (help              "Print this help message")))
 
@@ -31,10 +31,10 @@
                           #:name "reload"))
 
 (define-record-type <CliParams>
-  (make-CliParams watch service-dir unload-deleted services)
+  (make-CliParams watch service-directory  unload-deleted services)
   CliParams?
   (watch CliParams-watch)
-  (service-dir CliParams-service-dir)
+  (service-directory CliParams-service-directory )
   (unload-deleted CliParams-unload-deleted)
   (services CliParams-services))
 
@@ -43,12 +43,12 @@
                             reload-arg-spec
                             #:stop-at-first-non-option #t))
          (watch (option-ref opts 'watch #f))
-         (service-dir (option-ref opts 'watch default-services-path))
+         (service-directory  (option-ref opts 'service-directory  default-services-path))
          (unload-deleted (option-ref opts 'unload-deleted #f))
          (services (cdar opts))
          (help (option-ref opts 'help #f)))
     (values help (make-CliParams watch
-                                 service-dir
+                                 service-directory
                                  unload-deleted
                                  services))))
 
@@ -82,7 +82,7 @@
   (when help (usage #:exit-with 0))
   (let ((watch (CliParams-watch params))
         (services (CliParams-services params))
-        (services-directory (CliParams-service-dir params))
+        (services-directory (CliParams-service-directory  params))
         (unload-deleted (CliParams-unload-deleted params))
         )
     (cond
