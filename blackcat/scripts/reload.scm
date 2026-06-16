@@ -26,6 +26,7 @@
                                (help              "Print this help message")))
 
 (define usage (make-usage reload-arg-spec
+                          '(many "SERVICE")
                           #:spec-desc reload-arg-spec-desc
                           #:name "reload"))
 
@@ -79,20 +80,26 @@
 (define-public (main . args)
   (define-values (help params) (parse-args args))
   (when help (usage #:exit-with 0))
-  (cond
-   [(and (not (CliParams-watch params))
-         (null? (CliParams-services params)))
-    (usage "Must specify service(s) when not watching"
-           #:exit-with 1)]
-   [else
-    (for-each
-     (lambda (s) (display s))
-     (CliParams-services params))])
-  (when (CliParams-watch params)
-    (watch-directory
-     (CliParams-service-dir params)
-     (lambda (ty name)
-       (match ty
-         ((or 'create 'modify) (reload-service name (CliParams-service-dir params)))
-         ('delete (when (CliParams-unload-deleted params) (unload-service name)))
-         (_ #f))))))
+  (let ((watch (CliParams-watch params))
+        (services (CliParams-services params))
+        (services-directory (CliParams-service-dir params))
+        (unload-deleted (CliParams-unload-deleted params))
+        )
+    (cond
+     [(and (not watch) (null? services))
+      (usage "Must specify service(s) when not watching"
+             #:exit-with 1)]
+     [else
+      (for-each
+       (lambda (s) (display s))
+       services)])
+    (when watch
+      (watch-directory
+       services-directory
+       (lambda (ty name)
+         (match ty
+           ((or 'create 'modify) (reload-service name services-directory))
+           ('delete (if unload-deleted (unload-service name) '()))
+           (_ #f)))))
+    )
+  )
