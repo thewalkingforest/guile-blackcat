@@ -12,6 +12,7 @@
   #:use-module (ice-9 match)
   #:use-module (shepherd comm)
   #:use-module (shepherd support)
+  #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-171)
   #:use-module (srfi srfi-9)
   #:use-module (mkusage))
@@ -31,7 +32,7 @@
                           #:name "reload"))
 
 (define-record-type <CliParams>
-  (make-CliParams watch service-directory  unload-deleted services)
+  (make-CliParams watch services-directories unload-deleted services)
   CliParams?
   (watch CliParams-watch)
   (services-directories CliParams-services-directories)
@@ -55,7 +56,7 @@
          (services (cdar opts))
          (help (option-ref opts 'help #f)))
     (values help (make-CliParams watch
-                                 service-directory
+                                 services-directories
                                  unload-deleted
                                  services))))
 
