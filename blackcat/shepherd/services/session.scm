@@ -19,6 +19,7 @@
 (define-public elogind-service
   (service
    '(elogind)
+   #:requirement '(system)
    #:start (make-forkexec-constructor
             '("/usr/libexec/elogind/elogind.wrapper"))
    #:stop (make-kill-destructor)
@@ -27,6 +28,7 @@
 (define-public seatd-service
   (service
    '(seatd)
+   #:requirement '(system)
    #:start (make-forkexec-constructor
             '("seatd" "-g" "_seatd"))
    #:stop (make-kill-destructor)
@@ -35,6 +37,7 @@
 (define-public turstiled-service
   (service
    '(turstiled)
+   #:requirement '(system)
    #:start (make-forkexec-constructor
             '("turstiled"))
    #:stop (make-kill-destructor)

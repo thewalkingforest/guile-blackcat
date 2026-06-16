@@ -17,7 +17,7 @@
 (define-public network-manager-service
   (service
    '(network-manager dns)
-   #:requirement '(dbus)
+   #:requirement '(dbus system)
    #:start (make-forkexec-constructor
             '("NetworkManager" "-n"))
    #:stop (make-kill-destructor)
@@ -26,7 +26,7 @@
 (define-public openntpd-service
   (service
    '(openntpd)
-   #:requirement '(dns)
+   #:requirement '(dns system)
    #:start (make-forkexec-constructor
             '("openntpd" "-d"))
    #:stop (make-kill-destructor)
@@ -35,7 +35,7 @@
 (define-public sshd-inetd-service
   (service
    '(sshd-inetd)
-   #:requirement '(halt-hook)
+   #:requirement '(dns system)
    #:start (make-inetd-constructor
             '("sshd" "-D" "-i")
             (list (endpoint (make-socket-address AF_INET INADDR_ANY 22))
@@ -47,6 +47,7 @@
 (define-public sshd-service
   (service
    '(sshd)
+   #:requirement '(dns system)
    #:start (make-forkexec-constructor
             '("sshd" "-D"))
    #:stop (make-kill-destructor)
