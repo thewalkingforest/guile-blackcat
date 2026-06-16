@@ -4,9 +4,9 @@
 
 (define-module (blackcat watch)
   #:use-module (blackcat inotify)
-  #:export (watch-directory))
+  #:use-module (ice-9 optargs))
 
-(define* (watch-directory dir callback #:optional (events '(create delete modify moved-from moved-to)))
+(define*-public (watch-directory dir callback #:optional (events '(create delete modify moved-from moved-to)))
   (let ((inotify (make-inotify)))
     (inotify-add-watch! inotify dir events)
     (let loop ()
