@@ -14,10 +14,6 @@ nobase_dist_guilemodule_DATA = \
   blackcat/shepherd/utils.scm \
   blackcat/shepherd/services.scm \
   blackcat/shepherd/services/core.scm \
-  blackcat/shepherd/services/desktop.scm \
-  blackcat/shepherd/services/network.scm \
-  blackcat/shepherd/services/session.scm \
-  blackcat/shepherd/services/system.scm \
   blackcat/scripts/autoload.scm \
   blackcat/scripts/reload.scm \
   blackcat/scripts/hello.scm
