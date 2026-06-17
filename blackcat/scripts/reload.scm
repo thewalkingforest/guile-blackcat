@@ -32,10 +32,10 @@
                           #:name "reload"))
 
 (define-record-type <CliParams>
-  (make-CliParams watch services-directories unload-deleted services)
+  (make-CliParams watch service-directories unload-deleted services)
   CliParams?
   (watch CliParams-watch)
-  (services-directories CliParams-services-directories)
+  (service-directories CliParams-service-directories)
   (unload-deleted CliParams-unload-deleted)
   (services CliParams-services))
 
@@ -56,7 +56,7 @@
          (services (cdar opts))
          (help (option-ref opts 'help #f)))
     (values help (make-CliParams watch
-                                 services-directories
+                                 service-directories
                                  unload-deleted
                                  services))))
 
@@ -90,7 +90,7 @@
   (when help (usage #:exit-with 0))
   (let ((watch (CliParams-watch params))
         (services (CliParams-services params))
-        (services-directories (CliParams-services-directories  params))
+        (service-directories (CliParams-service-directories  params))
         (unload-deleted (CliParams-unload-deleted params))
         )
     (cond
@@ -103,10 +103,10 @@
        services)])
     (when watch
       (watch-directories
-       services-directories
+       service-directories
        (lambda (ty name)
          (match ty
-           ((or 'create 'modify) (reload-service name services-directory))
+           ((or 'create 'modify) (reload-service name service-directory))
            ('delete (if unload-deleted (unload-service name) '()))
            (_ #f)))))
     )
