@@ -5,7 +5,6 @@ guileccachedir = $(libdir)/guile/$(GUILE_EFFECTIVE_VERSION)/site-ccache
 
 nobase_dist_guilemodule_DATA = \
   blackcat.scm \
-  blackcat/config.scm \
   blackcat/inotify.scm \
   blackcat/utils.scm \
   blackcat/watch.scm \
@@ -17,9 +16,14 @@ nobase_dist_guilemodule_DATA = \
   blackcat/scripts/reload.scm \
   blackcat/scripts/hello.scm
 
+nobase_nodist_guilemodule_DATA = blackcat/config.scm
+
+EXTRA_DIST = blackcat/config.scm.in
+
 TAGS_FILES = $(nobase_dist_guilemodule_DATA)
 
-GOBJECTS = $(nobase_dist_guilemodule_DATA:.scm=.go)
+GOBJECTS = $(nobase_dist_guilemodule_DATA:.scm=.go) \
+           $(nobase_nodist_guilemodule_DATA:.scm=.go)
 
 nobase_guileccache_DATA = $(GOBJECTS)
 

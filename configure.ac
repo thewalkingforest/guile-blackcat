@@ -10,6 +10,7 @@ GUILE_PROGS
 
 dnl Check if the `usage` command is available
 AC_PATH_PROG([USAGE], [usage], [usage], [no])
+dnl FIX: `HAVE_USAGE` isnt set properly when usage doesnt exist
 AM_CONDITIONAL([HAVE_USAGE], [test "x$USAGE" = "xusage"])
 
 dnl Require the GNU Shepherd Guile library.
@@ -18,5 +19,6 @@ GUILE_MODULE_REQUIRED([shepherd])
 dnl Require the mkusage library
 GUILE_MODULE_REQUIRED([mkusage])
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile
+                 blackcat/config.scm])
 AC_OUTPUT

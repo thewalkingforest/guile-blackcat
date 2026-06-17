@@ -5,4 +5,4 @@
 (define-module (blackcat config))
 
 (define-public %blackcat-version
-  "0.1.0")
+  "@PACKAGE_VERSION@")
