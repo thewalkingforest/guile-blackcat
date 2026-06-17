@@ -8,6 +8,7 @@ Guile library for use in Blackcat linux scripts and other stuff.
 - [shepherd](https://shepherding.services/)
 - autotools
 - make
+- [usage](https://usage.jdx.dev/) (optional)
 
 ## License
 
