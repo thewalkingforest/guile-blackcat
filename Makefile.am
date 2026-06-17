@@ -10,7 +10,6 @@ nobase_dist_guilemodule_DATA = \
   blackcat/utils.scm \
   blackcat/watch.scm \
   blackcat/shepherd.scm \
-  blackcat/shepherd/defaults.scm \
   blackcat/shepherd/utils.scm \
   blackcat/shepherd/services.scm \
   blackcat/shepherd/services/core.scm \
@@ -32,10 +31,9 @@ GUILE_WARNINGS = -W3
 
 # Inter-module dependencies (mirrors the existing Makefile).
 blackcat.go: blackcat/config.go
-blackcat/scripts/autoload.go: blackcat/shepherd/defaults.go blackcat/watch.go
-blackcat/scripts/reload.go: blackcat/shepherd/defaults.go blackcat/watch.go
-blackcat/shepherd.go: blackcat/shepherd/defaults.go
-blackcat/shepherd/services.go: blackcat/shepherd/defaults.go
+blackcat/scripts/autoload.go: blackcat/shepherd/services.go blackcat/watch.go
+blackcat/scripts/reload.go: blackcat/shepherd/services.go blackcat/watch.go
+blackcat/shepherd.go: blackcat/shepherd/services.go
 blackcat/shepherd/utils.go: blackcat/utils.go
 blackcat/utils.go: blackcat/config.go
 blackcat/watch.go: blackcat/inotify.go

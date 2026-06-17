@@ -7,3 +7,5 @@
   #:use-module (shepherd service)
   #:re-export (%core-services
                %core-services-service))
+
+(define-public default-services-path "/etc/shepherd.d")

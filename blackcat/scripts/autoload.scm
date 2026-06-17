@@ -1,9 +1,9 @@
-; This Source Code Form is subject to the terms of the Mozilla Public
-; License, v. 2.0. If a copy of the MPL was not distributed with this
-; file, You can obtain one at https://mozilla.org/MPL/2.0/.
+;; This Source Code Form is subject to the terms of the Mozilla Public
+;; License, v. 2.0. If a copy of the MPL was not distributed with this
+;; file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 (define-module (blackcat scripts autoload)
-  #:use-module (blackcat shepherd defaults)
+  #:use-module (blackcat shepherd services)
   #:use-module (blackcat watch)
   #:use-module (ice-9 format)
   #:use-module (ice-9 ftw)
@@ -30,8 +30,8 @@
 
 (define (remove-suffix str suffix)
   (if (string-suffix? suffix str)
-    (string-drop-right str (string-length suffix))
-    str))
+      (string-drop-right str (string-length suffix))
+      str))
 
 (define (unload-service file)
   (let ((name (remove-suffix file ".scm")))
@@ -40,9 +40,9 @@
 
 (define (main . args)
   (watch-directory
-    default-services-path
-    (lambda (ty name)
-      (match ty
-        ((or 'create 'modify) (reload-service name))
-        ('delete (unload-service name))
-        (_ #f)))))
+   default-services-path
+   (lambda (ty name)
+     (match ty
+       ((or 'create 'modify) (reload-service name))
+       ('delete (unload-service name))
+       (_ #f)))))

@@ -4,7 +4,7 @@
 
 (define-module (blackcat shepherd)
   #:declarative? #f
-  #:use-module (blackcat shepherd defaults)
+  #:use-module (blackcat shepherd services)
   #:use-module (ice-9 ftw)
   #:use-module (ice-9 optargs))
 

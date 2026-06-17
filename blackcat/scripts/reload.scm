@@ -4,7 +4,7 @@
 
 
 (define-module (blackcat scripts reload)
-  #:use-module (blackcat shepherd defaults)
+  #:use-module (blackcat shepherd services)
   #:use-module (blackcat watch)
   #:use-module (ice-9 format)
   #:use-module (ice-9 ftw)
