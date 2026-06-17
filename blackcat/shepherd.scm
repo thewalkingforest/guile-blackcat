@@ -8,7 +8,7 @@
   #:use-module (ice-9 ftw)
   #:use-module (ice-9 optargs))
 
-(define*-public (load-services-dir #:optional (path (default-services-path)))
+(define*-public (load-services-dir #:optional (path default-services-path))
   (for-each
    (lambda (file)
      (load (string-append path "/" file)))
